@@ -1,0 +1,7 @@
+fastapi[all]
+sqlalchemy
+python-multipart
+pyjwt
+python-dotenv
+psycopg2 
+# mysqlclient

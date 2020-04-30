@@ -1,0 +1,17 @@
+#app > * {
+  margin: 5px;
+}
+
+.todo-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo {
+  margin-right: auto;
+  background-color: azure;
+}
+
+.todo-done {
+  text-decoration: line-through;
+}

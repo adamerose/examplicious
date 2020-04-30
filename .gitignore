@@ -1,0 +1,15 @@
+.env
+
+################ api
+**/.idea
+**/__pycache__/
+**.db
+
+################ client
+# dependencies
+**/node_modules/
+.pnp
+.pnp.js
+
+**/coverage
+**/build

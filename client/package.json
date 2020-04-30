@@ -1,0 +1,40 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^5.6.4",
+    "axios": "^0.19.2",
+    "mobx": "^5.15.4",
+    "mobx-devtools-mst": "^0.9.21",
+    "mobx-react-lite": "^1.5.2",
+    "mobx-state-tree": "^3.15.0",
+    "mst-middlewares": "^3.15.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-json-view": "^1.19.1",
+    "react-scripts": "3.4.0",
+    "serve": "^11.3.0",
+    "uuid": "^7.0.1"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
