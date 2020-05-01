@@ -1,10 +1,11 @@
 # About
 
-This is a React+Python web app example. See live demo [here](https://examplicious.herokuapp.com/). The client queries this API.
+This is a React+Python web app example. See a live demo [here](https://examplicious.herokuapp.com/) and the backend API  [here](https://examplicious-api.herokuapp.com).
 
-## Run locally
+## Running locally
 
-```bash
+You can run this web app locally as shown below. By default the client runs on `localhost:8000` and the api on `localhost:3000`.
+```console
 # Run client
 cd client
 npm install
@@ -15,7 +16,7 @@ pip install -r requirements.txt
 python run.py
 ```
 
-# Technologies
+## Technologies
 
 - [React](https://reactjs.org/) - JavaScript frontend UI
   - [create-react-app](https://create-react-app.dev/) - Generates boilerplate React app and webpack config
@@ -23,8 +24,8 @@ python run.py
   -
 - [FastAPI](https://fastapi.tiangolo.com/) - Python backend API
 
-# Environment
-```
+## Environment Variables
+```console
 # Client (Embeded in app during create-react-app buildtime)
 REACT_APP_API_HOSTNAME
 REACT_APP_API_PORT
@@ -38,43 +39,46 @@ DATABASE_URL
 This repository contains two folders for the `client/` and `api/`, and since Heroku Git deployment requires pushing git repositories we use `git subtree` to push these subfolders to our two app remotes.
 
 ## Initial Setup
+Set up a Heroku account and the Heroku CLI and log in.
 
-```bash
+```console
 heroku login
-# Create apps for client and api
+```
+
+Create two Heroku apps for the `client` and `api`, and set up remotes for each one which will automatically deploy pushed code. Make the apps aware of the other's location by setting the environment variables listed in the section above. Add the `heroku-postgresql` addon, which will automatically set the `DATABASE_URL` environment variable for the app it's applied to.
+
+```console
 heroku create examplicious --remote heroku-client
 heroku create examplicious-api --remote heroku-api
-# Create postgres database. This addon will set DATABASE_URL
-heroku addons:create --app examplicious-api heroku-postgresql:hobby-dev
-# Set client environment variables
+
 heroku config:set --app examplicious REACT_APP_API_HOSTNAME=examplicious-api.herokuapp.com
 heroku config:set --app examplicious REACT_APP_API_PORT=443
-# Set api environment variables
+
 heroku config:set --app examplicious-api CLIENT_HOSTNAME=examplicious.herokuapp.com
 heroku config:set --app examplicious-api CLIENT_PORT=443
 
+heroku addons:create --app examplicious-api heroku-postgresql:hobby-dev
 ```
 
-# Deploy
+## Deploying
 
-```bash
-git subtree push --prefix client heroku-client master
-git subtree push --prefix api heroku-api master
+After cloning or committing changes, push subfolders to their respective apps' remotes. 
+
+```console
+git subtree push --force --prefix client heroku-client master
+git subtree push --force --prefix api heroku-api master
 ```
 
-# Other
+## Other Commands
 
-```bash
+```console
 # Show app logs
 heroku logs --app examplicious --tail
 heroku logs --app examplicious-api --tail
 # Destroy app
 heroku apps:destroy examplicious --confirm examplicious
 heroku apps:destroy examplicious-api --confirm examplicious-api
-
-heroku apps:destroy test6230790630 --confirm test6230790630
-
-# Restart deno
+# Restart dyno
 heroku dyno:restart --app examplicious
 heroku dyno:restart --app examplicious-api
 ```
