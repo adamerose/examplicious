@@ -14,7 +14,6 @@ class LoginForm(BaseModel):
 class ArticleBase(BaseModel):
     title: str
     body: str
-    author: User
 
 
 class ArticleCreate(ArticleBase):
