@@ -16,7 +16,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         f"http://{CLIENT_HOSTNAME}:{CLIENT_PORT}",
-        f"https://{CLIENT_HOSTNAME}:{CLIENT_PORT}"
+        f"https://{CLIENT_HOSTNAME}:{CLIENT_PORT}",
+        f"http://{CLIENT_HOSTNAME}:80",
+        f"https://{CLIENT_HOSTNAME}:443",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -73,8 +75,8 @@ def post_user(item: pm.UserCreate,
 
 @app.get("/articles", response_model=List[pm.Article])
 def get_article(db=Depends(get_db)):
-    articles = db.query(sm.Article)\
-        .order_by(sm.Article.id.desc())\
+    articles = db.query(sm.Article) \
+        .order_by(sm.Article.id.desc()) \
         .all()
     return articles
 
