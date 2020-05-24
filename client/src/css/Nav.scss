@@ -37,7 +37,7 @@ header {
 #nav-links > a {
   @extend .clickable;
 
-  height: calc($height / 2);
+  height: calc(#{$height} / 2);
   max-height: 50%;
   color: black;
   padding: 2px 12px;
