@@ -19,6 +19,8 @@ app.add_middleware(
         f"https://{CLIENT_HOSTNAME}:{CLIENT_PORT}",
         f"http://{CLIENT_HOSTNAME}:80",
         f"https://{CLIENT_HOSTNAME}:443",
+        f"http://{CLIENT_HOSTNAME}",
+        f"https://{CLIENT_HOSTNAME}",
     ],
     allow_credentials=True,
     allow_methods=["*"],
