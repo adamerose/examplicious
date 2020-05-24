@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 DeclarativeBase = declarative_base()
 
-
 # We will inherit from this base class to create the database ORM model classes
 class Base(DeclarativeBase):
     __abstract__ = True
@@ -27,9 +26,18 @@ class Base(DeclarativeBase):
         return f"<{name}({key_vals})>"
 
 
-class Todo(Base):
-    __tablename__ = "todos"
+class Article(Base):
+    __tablename__ = "articles"
 
     id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
     title = Column(Text)
-    done = Column(Boolean)
+    body = Column(Text)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
+    username = Column(Text)
+    email = Column(Text)
+    hashed_password = Column(Text)

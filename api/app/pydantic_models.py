@@ -1,23 +1,51 @@
-from datetime import datetime
-from pydantic import BaseModel
-from datetime import datetime
-from typing import List
 from pydantic import BaseModel
 
+##############################
+# Authentication
 
-# JWT
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+class LoginForm(BaseModel):
+    username: str
+    password: str
 
 
-class TodoCreate(BaseModel):
+##############################
+# Article
+
+class ArticleBase(BaseModel):
     title: str
-    done: bool = False
+    body: str
+    author: User
 
 
-class Todo(TodoCreate):
+class ArticleCreate(ArticleBase):
+    pass
+
+
+class Article(ArticleBase):
     id: int
 
     class Config:
         orm_mode = True
+
+
+##############################
+# User
+
+class UserBase(BaseModel):
+    username: str
+    email: str = None
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class User(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserInDB(UserBase):
+    hashed_password: str

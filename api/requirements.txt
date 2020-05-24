@@ -1,7 +1,14 @@
 fastapi[all]
-sqlalchemy
 python-multipart
-pyjwt
 python-dotenv
+
+# Auth
+pyjwt
+passlib[bcrypt]
+
+
+# Database
+sqlalchemy
+# I use MySQL locally and Postgres on Heroku so installing both
 psycopg2 
-# mysqlclient
+mysqlclient

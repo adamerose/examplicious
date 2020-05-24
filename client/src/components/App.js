@@ -1,91 +1,65 @@
+import React from "react";
+import {
+  Router,
+  Switch,
+  Route,
+  Redirect,
+  Link,
+  NavLink,
+  withRouter,
+} from "react-router-dom";
+import history from "src/history";
+
+import { message, Alert, Layout, Spin, Menu } from "antd";
+
+// Store
 import { observer } from "mobx-react-lite";
-import React, { useContext, useState, useEffect } from "react";
-import { store } from "../store";
-import ReactJson from "react-json-view";
-import "./App.css";
+import { store } from "src/store";
 
-const AddTodoForm = () => {
-  const [text, setText] = useState("");
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        store.addTodo(text);
-        setText("");
-      }}
-    >
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
-      ></input>
-      <button disabled={!text} type="submit">
-        Add
-      </button>
-    </form>
+import CreatePage from "./pages/CreatePage";
+import HomePage from "./pages/HomePage";
+import RegisterPage from "./pages/RegisterPage";
+import SignInPage from "./pages/SignInPage";
+import ArticlePage from "./pages/ArticlePage";
+import SettingsPage from "./pages/SettingsPage";
+
+import Nav from "./common/Nav";
+
+import "src/css/main.scss";
+import "antd/dist/antd.css";
+
+const App = observer(() => {
+  const content = (
+    <Router history={history}>
+      <>
+        <Nav />
+        <main>
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/create">
+              <CreatePage />
+            </Route>
+            <Route path="/article/:id">
+              <ArticlePage />
+            </Route>
+            <Route path="/sign-in">
+              <SignInPage />
+            </Route>
+            <Route path="/register">
+              <RegisterPage />
+            </Route>
+          </Switch>
+          <Route path="/settings">
+            <SettingsPage />
+          </Route>
+        </main>
+      </>
+    </Router>
   );
-};
 
-const TodoView = observer(({ todo }) => (
-  <div className={todo.done ? "todo todo-done" : "todo"} key={todo.title}>
-    <button onClick={todo.remove}>❌</button>
-    <label>
-      <input
-        type="checkbox"
-        checked={todo.done}
-        onClick={todo.toggle}
-        readOnly
-      />
-      {todo.title}
-    </label>
-  </div>
-));
-
-export const App = observer(() => {
-  return (
-    <div id="app">
-      <h1>Todos</h1>
-      <h4>Completed: {store.completedTodosCount}</h4>
-      <h4>Unompleted: {store.uncompletedTodosCount}</h4>
-      <div className="todo-container">
-        {store.todos.map((todo) => (
-          <TodoView key={todo.title} todo={todo} />
-        ))}
-      </div>
-
-      <AddTodoForm />
-      <button onClick={store.saveTodos}>Save To Server</button>
-      <button
-        disabled={!store.undoManager.canUndo}
-        onClick={store.undoManager.undo}
-      >
-        undo
-      </button>
-      <button
-        disabled={!store.undoManager.canRedo}
-        onClick={store.undoManager.redo}
-      >
-        redo
-      </button>
-
-      <br />
-      <br />
-      <hr />
-      <div id="undo-panel" style={{ border: "1px solid black" }}>
-        <div>undoLevels: {store.undoManager.undoLevels}</div>
-        <div>redoLevels: {store.undoManager.redoLevels}</div>
-        <div>canUndo: {store.undoManager.canUndo.toString()}</div>
-        <div>canRedo: {store.undoManager.canRedo.toString()}</div>
-        <ReactJson
-          src={JSON.parse(JSON.stringify(store.undoManager))}
-          displayObjectSize={false}
-          displayDataTypes={false}
-        />
-      </div>
-    </div>
-  );
+  return store.loading ? <Spin tip="Loading...">{content}</Spin> : content;
 });
 
 export default App;

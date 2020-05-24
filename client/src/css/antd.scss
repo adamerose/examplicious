@@ -1,0 +1,27 @@
+//////////////////////////////////////////////////////////////////////////
+// Ant Design
+
+// https://github.com/ant-design/ant-design/issues/22593
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+// Make form fields with labels above more compact
+.ant-form-vertical div.ant-form-item-label {
+  label {
+    font-weight: bold;
+    font-size: 9pt;
+  }
+  margin: 0;
+  padding-left: 2px;
+  padding-bottom: 0px;
+}
+
+.ant-spin-nested-loading,
+.ant-spin-container {
+  height: 100%;
+  width: 100%;
+}

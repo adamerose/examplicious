@@ -1,21 +1,30 @@
 {
   "name": "client",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.1.0",
     "@craco/craco": "^5.6.4",
+    "antd": "^4.2.0",
     "axios": "^0.19.2",
+    "formik": "^2.1.4",
+    "formik-antd": "^2.0.1",
     "mobx": "^5.15.4",
-    "mobx-devtools-mst": "^0.9.21",
     "mobx-react-lite": "^1.5.2",
+    "mobx-react-router": "^4.1.0",
     "mobx-state-tree": "^3.15.0",
     "mst-middlewares": "^3.15.0",
+    "node-sass": "^4.14.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-google-login": "^5.1.14",
     "react-json-view": "^1.19.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "serve": "^11.3.0",
-    "uuid": "^7.0.1"
+    "uuid": "^7.0.1",
+    "yup": "^0.28.5"
   },
   "scripts": {
     "start": "craco start",
