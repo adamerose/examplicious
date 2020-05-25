@@ -8,7 +8,6 @@ import { observer } from "mobx-react-lite";
 import { store } from "src/store";
 
 import history from "src/history";
-import "src/css/Nav.scss";
 
 const Nav = observer(() => {
   console.log(history.location.pathname);

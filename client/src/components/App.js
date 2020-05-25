@@ -26,6 +26,7 @@ import SettingsPage from "./pages/SettingsPage";
 import Nav from "./common/Nav";
 
 import "src/css/main.scss";
+import "src/css/Nav.scss";
 import "antd/dist/antd.css";
 
 const App = observer(() => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { message, Alert, Layout, Spin, Menu } from "antd";
+import { notification, message, Alert, Layout, Spin, Menu } from "antd";
 
 import {
   types,
@@ -47,31 +47,19 @@ const Store = types
       }),
 
       signIn: flow(function* signIn(username, password, remember) {
-        try {
-          const token = (yield api.post("/sign-in", { username, password }))
-            .data;
-
-          if (remember) {
-            localStorage.setItem("jwt", token);
-          }
-
-          self.jwt = token;
-          api.defaults.headers.common = { Authorization: `bearer ${token}` };
-          self.userInfo = (yield api.get("/users/me")).data;
-
-          history.push("/");
-        } catch (e) {
-          alert("Failed to signIn." + e);
-        }
+        // const token = (yield api.post("/sign-in", { username, password })).data;
+        // if (remember) {
+        //   localStorage.setItem("jwt", token);
+        // }
+        // self.jwt = token;
+        // api.defaults.headers.common = { Authorization: `bearer ${token}` };
+        // self.userInfo = (yield api.get("/users/me")).data;
+        // history.push("/");
       }),
       signOut: flow(function* signOut() {
-        try {
-          self.jwt = undefined;
-          self.userInfo = undefined;
-          localStorage.removeItem("jwt");
-        } catch (e) {
-          alert("Failed to signOut." + e);
-        }
+        self.jwt = undefined;
+        self.userInfo = undefined;
+        localStorage.removeItem("jwt");
       }),
       restoreSession: flow(function* restoreSession() {
         const token = localStorage.getItem("jwt");
@@ -88,10 +76,16 @@ const Store = types
         api.interceptors.response.use(
           (response) => response,
           (error) => {
-            const errorMessage = error.response
-              ? `${error.name}: ${error.message}\n${error.response.toJSON()}`
-              : `${error.name}: ${error.message}`;
-            message.error(errorMessage);
+            window.error = error;
+
+            notification["error"]({
+              message: `${error.name}: ${error.message}`,
+              description: (
+                <div style={{ textAlign: "left" }}>
+                  {`${JSON.stringify(error.response.data, null, 2)}`}
+                </div>
+              ),
+            });
 
             return Promise.reject(error);
           }
@@ -100,6 +94,10 @@ const Store = types
         self.restoreSession();
         self.fetchArticles();
       },
+
+      test: flow(function* test() {
+        console.log("test");
+      }),
     };
   })
   .views((self) => ({

@@ -31,7 +31,10 @@ export const SignInPage = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          store.signIn(values.username, values.password, values.remember);
+          actions.setSubmitting(false);
+          // store
+          //   .signIn(values.username, values.password, values.remember)
+          //   .catch(actions.setSubmitting(false));
         }}
         validationSchema={validationSchema}
       >
