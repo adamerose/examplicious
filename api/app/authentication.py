@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 import jwt
 from jwt import PyJWTError
 from app.pydantic_models import UserInDB
-from app.database import get_db, DbContextManager
+from app.database import get_db, DbSessionContextManager
 from fastapi import Depends, HTTPException, status
 from app import sqlalchemy_models as sm
 from app import pydantic_models as pm
@@ -22,11 +22,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_credentials(username, password):
-    with DbContextManager() as db:
-
+    with DbSessionContextManager() as db:
         user = db.query(sm.User).filter_by(username=username).first()
-        if user is not None:
-            pwd_context.verify(password, user.hashed_password)
+        if (user is not None) and (pwd_context.verify(password, user.hashed_password)):
             return True
         else:
             return False

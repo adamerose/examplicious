@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Formik } from "formik";
 import {
   SubmitButton,
@@ -26,15 +26,23 @@ const initialValues = {
 };
 
 export const SignInPage = () => {
+  const [globalErrors, setGlobalErrors] = useState([]);
+
   return (
     <Card title="Sign In" className="dialog center">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          actions.setSubmitting(false);
-          // store
-          //   .signIn(values.username, values.password, values.remember)
-          //   .catch(actions.setSubmitting(false));
+          store
+            .signIn(values.username, values.password, values.remember)
+            .catch((error) => {
+              console.log(error);
+              window.error = error;
+              setGlobalErrors([...globalErrors, error]);
+            })
+            .finally(() => {
+              actions.setSubmitting(false);
+            });
         }}
         validationSchema={validationSchema}
       >

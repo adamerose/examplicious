@@ -1,12 +1,11 @@
 from typing import List
-from fastapi import Depends, HTTPException, BackgroundTasks, Header
-from fastapi.security import OAuth2PasswordBearer
-
+import time
 from fastapi import FastAPI
-from sqlalchemy.orm import Session
+
 from starlette.middleware.cors import CORSMiddleware
 from app import sqlalchemy_models as sm
 from app import pydantic_models as pm
+from app import utility, database
 from app.database import engine, get_db
 from app.environment import CLIENT_HOSTNAME, CLIENT_PORT
 
@@ -47,33 +46,50 @@ def sign_in(data: pm.LoginForm):
 
 
 ########################################################################################################################
+# Users
 
-@app.get("/users", response_model=pm.User)
+@app.get("/users", response_model=List[pm.User])
 def get_users(db=Depends(get_db)):
     users = db.query(sm.User).all()
-    pm.User.validate(users)
     return users
 
 
 @app.get("/users/me", response_model=pm.User)
-def get_user(db=Depends(get_db)):
-    user = db.query(sm.User).first()
+def get_user(db=Depends(get_db),
+             current_user: pm.User = Depends(get_current_user)):
+    user = db.query(sm.User).filter_by(username=current_user.username).one()
     return user
 
 
 @app.post("/users", response_model=pm.User)
 def post_user(item: pm.UserCreate,
-              db=Depends(get_db)):
+              db=Depends(get_db),
+              ):
     item_dict = item.dict()
     item_dict['hashed_password'] = get_password_hash(item.password)
     item_dict.pop('password')
+
+    print(item)
+    print(item_dict)
+    all_users = db.query(sm.User)
+    if all_users.filter_by(username=item.username).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username is taken")
+    if all_users.filter_by(email=item.email).filter(sm.User.email.isnot(None)).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email is taken")
+
     db_user = sm.User(**item_dict)
     db.add(db_user)
     db.commit()
+
     return db_user
 
 
 ########################################################################################################################
+# Articles
 
 @app.get("/articles", response_model=List[pm.Article])
 def get_article(db=Depends(get_db)):
@@ -92,3 +108,40 @@ def post_article(item: pm.ArticleCreate,
     db.commit()
 
     return db_article
+
+
+########################################################################################################################
+# Custom HTTP Responses
+from pydantic import BaseModel, EmailStr
+from fastapi.responses import PlainTextResponse, JSONResponse
+from fastapi.exceptions import RequestValidationError, ValidationError
+from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
+
+
+# Make validation error HTTP responses more readable
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=418,
+        content={"detail": str(exc)},
+    )
+
+
+########################################################################################################################
+# Admin functions
+
+@app.get("/fill_db")
+def get_article(password: str = None):
+    if password == "babymonkey":
+        utility.add_mock_data()
+        return PlainTextResponse("fill_db success")
+    return PlainTextResponse("Wrong password")
+
+
+@app.get("/reset_db")
+def get_article(password: str = None):
+    if password == "babymonkey":
+        database.delete_all_tables()
+        database.initialize_db()
+        return PlainTextResponse("reset_db success")
+    return PlainTextResponse("Wrong password")

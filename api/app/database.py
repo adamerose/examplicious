@@ -7,19 +7,19 @@ from sqlalchemy.orm import sessionmaker
 from app.environment import DATABASE_URL
 import app.sqlalchemy_models as sm
 from contextlib import contextmanager
+from app.utility import print_header
+from sqlalchemy import inspect, Table
+from sqlalchemy import MetaData
+import json
+import uuid
 
 if not DATABASE_URL:
     logging.warning("No DATABASE_URL in environment variables. Using local sqlite database: ./examplicious.db")
     DATABASE_URL = f"sqlite:///examplicious.db"
 
-engine = create_engine(DATABASE_URL)
-SessionMaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-db = SessionMaker()
 
-import uuid
-class DbContextManager:
+class DbSessionContextManager:
     def __init__(self):
-
         self.id = uuid.uuid4()
         self.db = SessionMaker()
         print(f"Opened db session - {self.id}")
@@ -34,16 +34,8 @@ class DbContextManager:
 
 
 def get_db():
-    with DbContextManager() as db:
+    with DbSessionContextManager() as db:
         yield db
-
-
-# Initialize the database (normally you should use Alembic for this)
-try:
-    sm.Base.metadata.create_all(bind=engine)
-except Exception as e:
-    print("Failed to create tables")
-    print(e)
 
 
 def describe_database():
@@ -51,26 +43,42 @@ def describe_database():
     Nicely print a description of the tables in the database associated with this SQLA engine object
     """
 
-    from sqlalchemy import inspect, Table
+    with DbSessionContextManager() as session:
 
-    inspector = inspect(engine)
-    with DbContextManager() as db:
-        for table_name in inspector.get_table_names():
-            table = Table(table_name, sm.Base.metadata, autoload=True, autoload_with=engine)
+        meta = MetaData()
+        meta.reflect(bind=engine)
 
-            print(f"\n-------\n{table_name} - ({db.query(table).count()} rows)\n-------")
-            for column in inspector.get_columns(table_name):
-                print(f"{column['name']:<10} - {column['type']}")
+        for table in meta.sorted_tables:
+            table_row_count = session.query(table).count()
+
+            print_header(f"{table.name} ({table_row_count} rows)")
+            for column in table.columns:
+                print(f"{column.name:<15} - {str(column.type):<15}")
+
+            for constraint in table.constraints:
+                print(constraint)
+        print_header()
 
 
 def delete_all_tables():
-    if input("Are you sure you want to delete all tables?").lower().startswith('y'):
-        for table_name in engine.table_names():
-            print(f"Deleting table: {table_name}")
-            engine.execute(f'DROP TABLE IF EXISTS {table_name};')
-        print("Deleted all tables.")
-    else:
-        print("Cancelled.")
+    meta = MetaData(bind=engine)
+    meta.reflect()
+
+    for table in meta.sorted_tables:
+        print(f"Dropping table {table.name}")
+        table.drop()
+
+    initialize_db()
 
 
-describe_database()
+def initialize_db():
+    # Initialize the database (normally you should use Alembic for this)
+    try:
+        sm.Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print("Failed to create tables")
+        print(e)
+
+
+engine = create_engine(DATABASE_URL)
+SessionMaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)

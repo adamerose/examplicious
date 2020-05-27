@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
+
 import { Formik } from "formik";
 import {
   SubmitButton,
@@ -10,33 +11,47 @@ import {
 } from "formik-antd";
 import * as Yup from "yup";
 
-import { message, Button, Card } from "antd";
+import { Alert, message, Button, Card } from "antd";
 import store from "src/store";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().label("Username").required(),
   password: Yup.string().label("Password").required(),
-  email: Yup.string().label("Email").email(),
+  email: Yup.string().label("Email").email().nullable(true),
 });
 
 const initialValues = {
   username: "",
   password: "",
-  email: "",
+  email: null,
 };
 
 export const RegisterPage = () => {
+  const [globalErrors, setGlobalErrors] = useState([]);
+
   return (
     <Card title="Register" className="dialog center">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          store.register(values.username, values.password, values.email);
+          store
+            .register(values.username, values.password, values.email)
+            .catch((error) => {
+              console.log(error);
+              window.error = error;
+              setGlobalErrors([...globalErrors, error]);
+            })
+            .finally(() => {
+              actions.setSubmitting(false);
+            });
         }}
         validationSchema={validationSchema}
       >
         {({ errors, touched }) => (
           <>
+            {globalErrors.map((e) => (
+              <ErrorAlert error={e} />
+            ))}
             <StyledForm>
               <Form.Item name="username" label="Username">
                 <Input name="username" />
@@ -51,7 +66,7 @@ export const RegisterPage = () => {
                 <SubmitButton>Submit</SubmitButton>
               </Button.Group>
             </StyledForm>
-            {/* <FormikDebug /> */}
+            <FormikDebug />
           </>
         )}
       </Formik>
@@ -70,4 +85,15 @@ const StyledForm = (props) => (
   </Form>
 );
 
+const ErrorAlert = ({ error }) => (
+  <Alert
+    message={error?.name || "Error"}
+    description={
+      error?.response?.data?.detail || error?.message || "An error occured"
+    }
+    type="error"
+    closable
+    showIcon
+  />
+);
 export default RegisterPage;

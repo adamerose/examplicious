@@ -2,7 +2,7 @@
 Create the database models
 """
 
-from sqlalchemy import Column, Integer, Text, Boolean
+from sqlalchemy import Column, Integer, Text, Boolean, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 
 DeclarativeBase = declarative_base()
@@ -36,6 +36,9 @@ class Article(Base):
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = (UniqueConstraint('username'),
+                      UniqueConstraint('email'),
+                      )
 
     id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
     username = Column(Text)

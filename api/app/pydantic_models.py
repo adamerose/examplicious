@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 ##############################
 # Authentication
@@ -32,7 +32,7 @@ class Article(ArticleBase):
 
 class UserBase(BaseModel):
     username: str
-    email: str = None
+    email: EmailStr = None
 
 
 class UserCreate(UserBase):

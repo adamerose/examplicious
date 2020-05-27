@@ -24,6 +24,7 @@ import ArticlePage from "./pages/ArticlePage";
 import SettingsPage from "./pages/SettingsPage";
 
 import Nav from "./common/Nav";
+import ErrorHandler from "./common/ErrorHandler";
 
 import "src/css/main.scss";
 import "src/css/Nav.scss";
@@ -34,28 +35,31 @@ const App = observer(() => {
     <Router history={history}>
       <>
         <Nav />
-        <main>
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
+
+        <ErrorHandler>
+          <main>
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route path="/create">
+                <CreatePage />
+              </Route>
+              <Route path="/article/:id">
+                <ArticlePage />
+              </Route>
+              <Route path="/sign-in">
+                <SignInPage />
+              </Route>
+              <Route path="/register">
+                <RegisterPage />
+              </Route>
+            </Switch>
+            <Route path="/settings">
+              <SettingsPage />
             </Route>
-            <Route path="/create">
-              <CreatePage />
-            </Route>
-            <Route path="/article/:id">
-              <ArticlePage />
-            </Route>
-            <Route path="/sign-in">
-              <SignInPage />
-            </Route>
-            <Route path="/register">
-              <RegisterPage />
-            </Route>
-          </Switch>
-          <Route path="/settings">
-            <SettingsPage />
-          </Route>
-        </main>
+          </main>
+        </ErrorHandler>
       </>
     </Router>
   );

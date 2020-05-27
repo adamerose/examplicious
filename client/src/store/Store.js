@@ -45,16 +45,25 @@ const Store = types
 
         history.push("/");
       }),
+      register: flow(function* register(username, password, email) {
+        const user = (yield api.post("/users", {
+          username,
+          password,
+          email,
+        })).data;
 
+        yield self.signIn(username, password, true);
+        history.push("/");
+      }),
       signIn: flow(function* signIn(username, password, remember) {
-        // const token = (yield api.post("/sign-in", { username, password })).data;
-        // if (remember) {
-        //   localStorage.setItem("jwt", token);
-        // }
-        // self.jwt = token;
-        // api.defaults.headers.common = { Authorization: `bearer ${token}` };
-        // self.userInfo = (yield api.get("/users/me")).data;
-        // history.push("/");
+        const token = (yield api.post("/sign-in", { username, password })).data;
+        if (remember) {
+          localStorage.setItem("jwt", token);
+        }
+        self.jwt = token;
+        api.defaults.headers.common = { Authorization: `bearer ${token}` };
+        self.userInfo = (yield api.get("/users/me")).data;
+        history.push("/");
       }),
       signOut: flow(function* signOut() {
         self.jwt = undefined;
@@ -73,24 +82,6 @@ const Store = types
 
       // Hooks
       afterCreate() {
-        api.interceptors.response.use(
-          (response) => response,
-          (error) => {
-            window.error = error;
-
-            notification["error"]({
-              message: `${error.name}: ${error.message}`,
-              description: (
-                <div style={{ textAlign: "left" }}>
-                  {`${JSON.stringify(error.response.data, null, 2)}`}
-                </div>
-              ),
-            });
-
-            return Promise.reject(error);
-          }
-        );
-
         self.restoreSession();
         self.fetchArticles();
       },
