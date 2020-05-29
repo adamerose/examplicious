@@ -1,65 +1,56 @@
 import React, { useState } from "react";
-import { Menu, Divider } from "antd";
+import { Menu, Divider, Dropdown, Avatar, Typography, Space } from "antd";
 import { Link, NavLink, withRouter } from "react-router-dom";
-import { MenuOutlined } from "@ant-design/icons";
 
+import { UserOutlined, DownOutlined } from "@ant-design/icons";
 // Store
 import { observer } from "mobx-react-lite";
 import { store } from "src/store";
 
 import history from "src/history";
-import UserMenu from "src/components/common/UserMenu";
 
-const Nav = observer(() => {
-  console.log(history.location.pathname);
-
-  const [collapsed, setCollapsed] = useState(false);
-  const toggleCollapsed = () => setCollapsed(!collapsed);
-
-  const collapsible = collapsed ? "collapsed" : "";
-
-  let navContent;
-  if (store.isAuthenticated) {
-    navContent = (
-      <>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-        <NavLink to="/create">Create Post</NavLink>
-        <UserMenu />
-      </>
+const Nav = withRouter(
+  observer(() => {
+    const UserAvatarMenu = (
+      <Menu>
+        <Menu.Item>
+          <Link to="/settings">Settings</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={store.signOut}>Sign Out</a>
+        </Menu.Item>
+      </Menu>
     );
-  } else {
-    navContent = (
-      <>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-        <NavLink to="/sign-in">Sign In</NavLink>
-        <NavLink to="/register">Register</NavLink>
-      </>
+
+    const UserAvatar = (
+      <Dropdown overlay={UserAvatarMenu} trigger={["click"]}>
+        <Space>
+          <Avatar shape="square" size={24} icon={<UserOutlined />} />
+          <Typography>{store.userInfo?.username}</Typography>
+        </Space>
+      </Dropdown>
     );
-  }
 
-  return (
-    <header>
-      <div id="nav-container">
-        <div id="nav-topbar">
-          <a id="nav-hamburger" onClick={toggleCollapsed}>
-            <MenuOutlined />
-          </a>
-          <Link to="/" id="nav-logo">
-            <img src="Examplicious-Logo.svg" />
-          </Link>
-        </div>
+    const auth = store.isAuthenticated;
 
-        <nav id="nav-links" className={collapsible}>
-          {navContent}
-        </nav>
-      </div>
-    </header>
-  );
-});
+    return (
+      <Menu selectedKeys={["/"]} mode="horizontal">
+        <NavItem id="/">Home</NavItem>
+        {auth && <NavItem id="/create">Create Post</NavItem>}
+        {auth && <Menu.Item>{UserAvatar}</Menu.Item>}
+        {!auth && <NavItem id="/sign-in">Sign In</NavItem>}
+        {!auth && <NavItem id="/register">Register</NavItem>}
+      </Menu>
+    );
+  })
+);
 
-// https://stackoverflow.com/a/45036930/3620725
-export default withRouter(Nav);
+const NavItem = (props) => (
+  <Menu.Item key={props.id} {...props}>
+    <NavLink exact to={props.id}>
+      {props.children}
+    </NavLink>
+  </Menu.Item>
+);
+
+export default Nav;

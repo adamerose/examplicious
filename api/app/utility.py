@@ -27,16 +27,23 @@ def initial_requests():
 def add_mock_data():
     from fastapi.testclient import TestClient
     from app.main import app
-    from mimesis import Generic
+    from faker import Faker
+    from faker.providers import person, profile, lorem
+
+    f = Faker()
+    for x in [person, profile, lorem]:
+        f.add_provider(x)
+
+
+
 
     client = TestClient(app)
-    g = Generic('en')
 
     for _ in range(2):
 
-        username = g.person.username()
-        email = g.person.email()
-        password = g.person.password()
+        username = f.user_name()
+        email = f.email()
+        password = f.password()
 
         response1 = client.post('users', json={'username': username,
                                                'email': email,
@@ -48,6 +55,6 @@ def add_mock_data():
         token = response2.json()
 
         for _ in range(3):
-            article = client.post('articles', json={'title': g.text.title(),
-                                                    'body': g.text.text(5)},
+            article = client.post('articles', json={'title': f.paragraph(1),
+                                                    'body': f.paragraph(5)},
                                   headers={"Authorization": f"bearer {token}"})

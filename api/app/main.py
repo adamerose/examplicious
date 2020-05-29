@@ -131,7 +131,7 @@ async def validation_exception_handler(request, exc: RequestValidationError):
 # Admin functions
 
 @app.get("/fill_db")
-def get_article(password: str = None):
+def fill_db(password: str = None):
     if password == "babymonkey":
         utility.add_mock_data()
         return PlainTextResponse("fill_db success")
@@ -139,7 +139,7 @@ def get_article(password: str = None):
 
 
 @app.get("/reset_db")
-def get_article(password: str = None):
+def reset_db(password: str = None):
     if password == "babymonkey":
         database.delete_all_tables()
         database.initialize_db()

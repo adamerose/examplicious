@@ -10,8 +10,6 @@ import { store } from "src/store";
 import history from "src/history";
 
 const Nav = observer(() => {
-  console.log(history.location.pathname);
-
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => setCollapsed(!collapsed);
 

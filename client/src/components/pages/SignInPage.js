@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+
 import { Formik } from "formik";
 import {
   SubmitButton,
@@ -10,7 +11,7 @@ import {
 } from "formik-antd";
 import * as Yup from "yup";
 
-import { message, Button, Card } from "antd";
+import { Alert, message, Button, Card, Space } from "antd";
 import store from "src/store";
 
 const validationSchema = Yup.object().shape({
@@ -25,19 +26,22 @@ const initialValues = {
   remember: true,
 };
 
-export const SignInPage = () => {
+const onSubmit = (values) => {
+  return store.signIn(values.username, values.password, values.remember);
+};
+
+///////////
+
+const CustomForm = () => {
   const [globalErrors, setGlobalErrors] = useState([]);
 
   return (
-    <Card title="Sign In" className="dialog center">
+    <Card title="Register" className="dialog center">
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          store
-            .signIn(values.username, values.password, values.remember)
+          onSubmit(values)
             .catch((error) => {
-              console.log(error);
-              window.error = error;
               setGlobalErrors([...globalErrors, error]);
             })
             .finally(() => {
@@ -46,9 +50,16 @@ export const SignInPage = () => {
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
-          <>
-            <StyledForm>
+        {() => (
+          <Space>
+            {globalErrors.map((e) => (
+              <ErrorAlert error={e} />
+            ))}
+            <Form
+              className="dialog-contents center"
+              layout="vertical"
+              hideRequiredMark
+            >
               <Form.Item name="username" label="Username">
                 <Input name="username" />
               </Form.Item>
@@ -61,24 +72,25 @@ export const SignInPage = () => {
               <Button.Group style={{ marginBottom: 20 }}>
                 <SubmitButton>Submit</SubmitButton>
               </Button.Group>
-            </StyledForm>
+            </Form>
             {/* <FormikDebug /> */}
-          </>
+          </Space>
         )}
       </Formik>
     </Card>
   );
 };
 
-const StyledForm = (props) => (
-  <Form
-    className="dialog-contents center"
-    layout="vertical"
-    hideRequiredMark={true}
-    {...props}
-  >
-    {props.children}
-  </Form>
+const ErrorAlert = ({ error }) => (
+  <Alert
+    message={error?.name || "Error"}
+    description={
+      error?.response?.data?.detail || error?.message || "An error occured"
+    }
+    type="error"
+    closable
+    showIcon
+  />
 );
 
-export default SignInPage;
+export default CustomForm;

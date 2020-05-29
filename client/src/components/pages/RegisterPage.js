@@ -11,7 +11,7 @@ import {
 } from "formik-antd";
 import * as Yup from "yup";
 
-import { Alert, message, Button, Card } from "antd";
+import { Alert, message, Button, Card, Space } from "antd";
 import store from "src/store";
 
 const validationSchema = Yup.object().shape({
@@ -26,7 +26,13 @@ const initialValues = {
   email: null,
 };
 
-export const RegisterPage = () => {
+const onSubmit = (values) => {
+  return store.register(values.username, values.password, values.email);
+};
+
+///////////
+
+const CustomForm = () => {
   const [globalErrors, setGlobalErrors] = useState([]);
 
   return (
@@ -34,11 +40,8 @@ export const RegisterPage = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          store
-            .register(values.username, values.password, values.email)
+          onSubmit(values)
             .catch((error) => {
-              console.log(error);
-              window.error = error;
               setGlobalErrors([...globalErrors, error]);
             })
             .finally(() => {
@@ -47,12 +50,16 @@ export const RegisterPage = () => {
         }}
         validationSchema={validationSchema}
       >
-        {({ errors, touched }) => (
-          <>
+        {() => (
+          <Space>
             {globalErrors.map((e) => (
               <ErrorAlert error={e} />
             ))}
-            <StyledForm>
+            <Form
+              className="dialog-contents center"
+              layout="vertical"
+              hideRequiredMark
+            >
               <Form.Item name="username" label="Username">
                 <Input name="username" />
               </Form.Item>
@@ -62,28 +69,15 @@ export const RegisterPage = () => {
               <Form.Item name="email" label="Email (optional)">
                 <Input name="email" />
               </Form.Item>
-              <Button.Group style={{ marginBottom: 20 }}>
-                <SubmitButton>Submit</SubmitButton>
-              </Button.Group>
-            </StyledForm>
-            <FormikDebug />
-          </>
+              <SubmitButton>Submit</SubmitButton>
+            </Form>
+            {/* <FormikDebug /> */}
+          </Space>
         )}
       </Formik>
     </Card>
   );
 };
-
-const StyledForm = (props) => (
-  <Form
-    className="dialog-contents center"
-    layout="vertical"
-    hideRequiredMark={true}
-    {...props}
-  >
-    {props.children}
-  </Form>
-);
 
 const ErrorAlert = ({ error }) => (
   <Alert
@@ -96,4 +90,5 @@ const ErrorAlert = ({ error }) => (
     showIcon
   />
 );
-export default RegisterPage;
+
+export default CustomForm;
