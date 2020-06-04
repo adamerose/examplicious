@@ -1,0 +1,14 @@
+//////////////////////////////////////////////////////////////////////////
+// CSS Reset
+@import "./reset.scss";
+// Fonts
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+//////////////////////////////////////////////////////////////////////////
+
+#root {
+  background: url("https://images.pexels.com/photos/3157693/pexels-photo-3157693.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500")
+    no-repeat center center fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

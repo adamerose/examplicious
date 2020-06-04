@@ -1,56 +1,92 @@
-import React, { useState } from "react";
-import { Menu, Divider, Dropdown, Avatar, Typography, Space } from "antd";
-import { Link, NavLink, withRouter } from "react-router-dom";
-
-import { UserOutlined, DownOutlined } from "@ant-design/icons";
-// Store
+import { AppBar, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { observer } from "mobx-react-lite";
-import { store } from "src/store";
+import React from "react";
+import { Link, NavLink, withRouter } from "react-router-dom";
+import ThemeSwitch from "src/components/common/ThemeSwitch";
+import store from "src/store";
 
-import history from "src/history";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "30px",
+    "&>*": {},
+    "& img": {
+      height: "28px",
+      marginRight: "10px",
+    },
+    "& .active": {
+      textDecoration: "underline",
+    },
+    "& a": {
+      whiteSpace: "nowrap",
+    },
+  },
+  navBar: {
+    "&>*": { margin: 10 },
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  brand: {
+    "&>*": { margin: 0 },
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  userIcon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+}));
 
 const Nav = withRouter(
   observer(() => {
-    const UserAvatarMenu = (
-      <Menu>
-        <Menu.Item>
-          <Link to="/settings">Settings</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <a onClick={store.signOut}>Sign Out</a>
-        </Menu.Item>
-      </Menu>
-    );
-
-    const UserAvatar = (
-      <Dropdown overlay={UserAvatarMenu} trigger={["click"]}>
-        <Space>
-          <Avatar shape="square" size={24} icon={<UserOutlined />} />
-          <Typography>{store.userInfo?.username}</Typography>
-        </Space>
-      </Dropdown>
-    );
-
-    const auth = store.isAuthenticated;
+    const classes = useStyles();
 
     return (
-      <Menu selectedKeys={["/"]} mode="horizontal">
-        <NavItem id="/">Home</NavItem>
-        {auth && <NavItem id="/create">Create Post</NavItem>}
-        {auth && <Menu.Item>{UserAvatar}</Menu.Item>}
-        {!auth && <NavItem id="/sign-in">Sign In</NavItem>}
-        {!auth && <NavItem id="/register">Register</NavItem>}
-      </Menu>
+      <AppBar className={classes.root} position="static">
+        <Link to="/" className={classes.brand}>
+          <img src="brand-white.png" />
+          <Typography variant="h6" className={classes.title}>
+            Examplicious
+          </Typography>
+        </Link>
+
+        <div className={classes.navBar}>
+          {store.isAuthenticated ? (
+            <>
+              <NavLink exact to="/">
+                Home
+              </NavLink>
+              <NavLink to="/create">New Post</NavLink>
+              <div className={classes.userIcon}>
+                <AccountCircleIcon />
+                {store.userInfo.username}
+              </div>
+              <Link onClick={store.signOut}>Sign Out</Link>
+            </>
+          ) : (
+            <>
+              <NavLink exact to="/">
+                Home
+              </NavLink>
+              <NavLink to="/sign-in">Sign In</NavLink>
+              <NavLink to="/register">Register</NavLink>
+            </>
+          )}
+          <ThemeSwitch />
+        </div>
+      </AppBar>
     );
   })
-);
-
-const NavItem = (props) => (
-  <Menu.Item key={props.id} {...props}>
-    <NavLink exact to={props.id}>
-      {props.children}
-    </NavLink>
-  </Menu.Item>
 );
 
 export default Nav;

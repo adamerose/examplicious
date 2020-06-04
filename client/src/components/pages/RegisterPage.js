@@ -1,94 +1,51 @@
-import React, { useState, useEffect, useRef } from "react";
-
-import { Formik } from "formik";
-import {
-  SubmitButton,
-  ResetButton,
-  FormikDebug,
-  Form,
-  Input,
-  Checkbox,
-} from "formik-antd";
+import React from "react";
 import * as Yup from "yup";
-
-import { Alert, message, Button, Card, Space } from "antd";
+import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 
+import { Container, Card, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  Card: {
+    margin: "auto",
+    maxWidth: 500,
+  },
+});
+
 const validationSchema = Yup.object().shape({
-  username: Yup.string().label("Username").required(),
-  password: Yup.string().label("Password").required(),
+  username: Yup.string().label("Username").required("Enter your username"),
+  password: Yup.string().label("Password").required("Enter your password"),
   email: Yup.string().label("Email").email().nullable(true),
 });
 
 const initialValues = {
   username: "",
   password: "",
-  email: null,
+  email: "",
 };
 
-const onSubmit = (values) => {
+const onSubmit = (values, actions) => {
   return store.register(values.username, values.password, values.email);
 };
 
-///////////
-
 const CustomForm = () => {
-  const [globalErrors, setGlobalErrors] = useState([]);
-
+  const classes = useStyles();
   return (
-    <Card title="Register" className="dialog center">
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values, actions) => {
-          onSubmit(values)
-            .catch((error) => {
-              setGlobalErrors([...globalErrors, error]);
-            })
-            .finally(() => {
-              actions.setSubmitting(false);
-            });
-        }}
-        validationSchema={validationSchema}
-      >
-        {() => (
-          <Space>
-            {globalErrors.map((e) => (
-              <ErrorAlert error={e} />
-            ))}
-            <Form
-              className="dialog-contents center"
-              layout="vertical"
-              hideRequiredMark
-            >
-              <Form.Item name="username" label="Username">
-                <Input name="username" />
-              </Form.Item>
-              <Form.Item name="password" label="Password">
-                <Input.Password name="password" />
-              </Form.Item>
-              <Form.Item name="email" label="Email (optional)">
-                <Input name="email" />
-              </Form.Item>
-              <SubmitButton>Submit</SubmitButton>
-            </Form>
-            {/* <FormikDebug /> */}
-          </Space>
-        )}
-      </Formik>
+    <Card className={classes.Card}>
+      <CardContent>
+        <Typography variant="h5" align="center">
+          Register
+        </Typography>
+        <GenericForm
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          debug
+        />
+      </CardContent>
     </Card>
   );
 };
-
-const ErrorAlert = ({ error }) => (
-  <Alert
-    message={error?.name || "Error"}
-    description={
-      error?.response?.data?.detail || error?.message || "An error occured"
-    }
-    type="error"
-    closable
-    showIcon
-  />
-);
 
 export default CustomForm;

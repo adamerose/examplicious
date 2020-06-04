@@ -1,14 +1,4 @@
-import React from "react";
-import { notification, message, Alert, Layout, Spin, Menu } from "antd";
-
-import {
-  types,
-  getSnapshot,
-  applySnapshot,
-  destroy,
-  flow,
-} from "mobx-state-tree";
-
+import { flow, types } from "mobx-state-tree";
 import api from "src/api";
 import history from "src/history";
 
@@ -63,12 +53,13 @@ const Store = types
         self.jwt = token;
         api.defaults.headers.common = { Authorization: `bearer ${token}` };
         self.userInfo = (yield api.get("/users/me")).data;
-        history.push("/");
+        history.push("/create ");
       }),
       signOut: flow(function* signOut() {
         self.jwt = undefined;
         self.userInfo = undefined;
         localStorage.removeItem("jwt");
+        history.push("/sign-in");
       }),
       restoreSession: flow(function* restoreSession() {
         const token = localStorage.getItem("jwt");

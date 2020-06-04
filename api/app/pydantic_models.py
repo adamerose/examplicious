@@ -1,4 +1,14 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr as EmailStrBase
+
+
+# Treat empty string as null
+class EmailStr(EmailStrBase):
+    @classmethod
+    def validate(cls, value: str) -> str:
+        if value == "":
+            return None
+        return super().validate(value)
+
 
 ##############################
 # Authentication

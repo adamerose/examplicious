@@ -1,66 +1,54 @@
 import React from "react";
-
-// Store
-import { observer } from "mobx-react-lite";
+import * as Yup from "yup";
+import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 
-import api from "src/api";
+import { Container, Card, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { Card, Form, Input, Button, Checkbox } from "antd";
+const useStyles = makeStyles({
+  Card: {
+    margin: "auto",
+    maxWidth: 500,
+  },
+});
 
-const StyledForm = (props) => (
-  <Form
-    className="dialog-contents center"
-    layout="vertical"
-    hideRequiredMark={true}
-    {...props}
-  >
-    {props.children}
-  </Form>
-);
+const validationSchema = Yup.object().shape({
+  title: Yup.string().label("Title").required(),
+  body: Yup.string().label("Body").required(),
+});
 
-/////
+const uiSchema = {
+  body: "textarea",
+};
 
-const CreatePage = () => {
-  const onSubmit = (values) => {
-    store.postArticle(values.title, values.body);
-  };
+const initialValues = {
+  title: "",
+  body: "",
+};
 
-  const onSubmitFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+const onSubmit = (values, actions) => {
+  return store.postArticle(values.title, values.body);
+};
 
+const CustomForm = () => {
+  const classes = useStyles();
   return (
-    <Card title="Create Post" className="dialog center">
-      <StyledForm
-        name="create-post"
-        initialValues={{}}
-        onFinish={onSubmit}
-        onFinishFailed={onSubmitFailed}
-      >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[{ required: true, message: "Title is required" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="Body"
-          name="body"
-          rules={[{ required: true, message: "Body is required" }]}
-        >
-          <Input.TextArea />
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </StyledForm>
+    <Card className={classes.Card}>
+      <CardContent>
+        <Typography variant="h5" align="center">
+          Create Post
+        </Typography>
+        <GenericForm
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          uiSchema={uiSchema}
+          // debug
+        />
+      </CardContent>
     </Card>
   );
 };
-export default CreatePage;
+
+export default CustomForm;
