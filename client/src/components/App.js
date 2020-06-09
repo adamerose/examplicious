@@ -43,6 +43,10 @@ const GlobalCss = withStyles({
       textDecoration: "unset",
       color: "unset",
     },
+    "a,button": {
+      userSelect: "none",
+      userDrag: "none",
+    },
   },
 })(() => null);
 
