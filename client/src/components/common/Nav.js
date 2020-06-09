@@ -1,10 +1,10 @@
 import { AppBar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import ThemeSwitch from "src/components/common/ThemeSwitch";
+import UserAvatar from "src/components/common/UserAvatar";
 import store from "src/store";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,11 +67,7 @@ const Nav = withRouter(
                 Home
               </NavLink>
               <NavLink to="/create">New Post</NavLink>
-              <div className={classes.userIcon}>
-                <AccountCircleIcon />
-                {store.userInfo.username}
-              </div>
-              <Link onClick={store.signOut}>Sign Out</Link>
+              <UserAvatar />
             </>
           ) : (
             <>

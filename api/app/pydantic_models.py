@@ -58,3 +58,27 @@ class User(UserBase):
 
 class UserInDB(UserBase):
     hashed_password: str
+
+
+##############################
+# Subscriptions
+
+class Subscriptions(BaseModel):
+    user_id: int
+    publisher_id: int
+
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class User(UserBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserInDB(UserBase):
+    hashed_password: str

@@ -29,33 +29,6 @@ const themeDark = createMuiTheme({
 
 const theme = store.isThemeDark ? themeDark : themeLight;
 
-const overrides = createMuiTheme({
-  overrides: {
-    MuiTabs: {
-      indicator: {
-        backgroundColor: theme.palette.secondary.main,
-      },
-    },
-    MuiTab: {
-      root: {
-        minWidth: "72px !important",
-      },
-    },
-
-    MuiAvatar: {
-      colorDefault: {
-        color: "black",
-        backgroundColor: "#ffffff",
-      },
-    },
-    MuiIconButton: {
-      root: {
-        color: theme.palette.secondary.main,
-      },
-    },
-  },
-});
-
 const GlobalCss = withStyles({
   "@global": {
     "#root": {},
@@ -77,31 +50,29 @@ const App = observer(() => {
   return (
     <Router history={history}>
       <ThemeProvider theme={theme}>
-        <ThemeProvider theme={overrides}>
-          <CssBaseline />
-          <GlobalCss />
-          <Nav />
+        <CssBaseline />
+        <GlobalCss />
+        <Nav />
 
-          <Container>
-            <Switch>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
-              <Route path="/create">
-                <CreatePage />
-              </Route>
-              <Route path="/article/:id">
-                <ArticlePage />
-              </Route>
-              <Route path="/sign-in">
-                <SignInPage />
-              </Route>
-              <Route path="/register">
-                <RegisterPage />
-              </Route>
-            </Switch>
-          </Container>
-        </ThemeProvider>
+        <Container>
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/create">
+              <CreatePage />
+            </Route>
+            <Route path="/article/:id">
+              <ArticlePage />
+            </Route>
+            <Route path="/sign-in">
+              <SignInPage />
+            </Route>
+            <Route path="/register">
+              <RegisterPage />
+            </Route>
+          </Switch>
+        </Container>
       </ThemeProvider>
     </Router>
   );

@@ -1,23 +1,21 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardActionArea,
-  Typography,
-  CardActions,
-} from "@material-ui/core";
+import { Card, CardActions, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { NavLink } from "react-router-dom";
 // Store
 import { observer } from "mobx-react-lite";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import Flex from "src/components/common/Flex";
 import { store } from "src/store";
 
-import Flex from "src/components/common/Flex";
 const useStyles = makeStyles({
-  Card: {
+  card: {
     margin: "0 50px",
     marginBottom: 20,
-    maxHeight: 500,
+    whiteSpace: "pre-line",
+    "& .MuiTypography-root": {
+      maxHeight: 250,
+      overflow: "hidden",
+    },
   },
   NavLink: {
     color: "grey",
@@ -30,7 +28,7 @@ const HomePage = observer(() => {
   return (
     <Flex vertical alignItems="stretch">
       {store.articles.map((article, ix) => (
-        <Card key={ix} variant="outlined" className={classes.Card}>
+        <Card key={ix} variant="outlined" className={classes.card}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {article.title}

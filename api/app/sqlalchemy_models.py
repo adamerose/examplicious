@@ -2,10 +2,11 @@
 Create the database models
 """
 
-from sqlalchemy import Column, Integer, Text, Boolean, UniqueConstraint
+from sqlalchemy import Column, Integer, Text, Boolean, UniqueConstraint, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 DeclarativeBase = declarative_base()
+
 
 # We will inherit from this base class to create the database ORM model classes
 class Base(DeclarativeBase):
@@ -44,3 +45,13 @@ class User(Base):
     username = Column(Text)
     email = Column(Text)
     hashed_password = Column(Text)
+
+
+class Subscription(Base):
+    __tablename__ = "subscriptions"
+    __table_args__ = (UniqueConstraint('user_id', 'publisher_id', name='uix_1'),
+                      )
+
+    id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
+    user_id = Column(Integer, ForeignKey("users.id"))
+    publisher_id = Column(Integer, ForeignKey("users.id"))

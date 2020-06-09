@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 import time
 from fastapi import FastAPI
 
@@ -116,19 +116,35 @@ from pydantic import BaseModel, EmailStr
 from fastapi.responses import PlainTextResponse, JSONResponse
 from fastapi.exceptions import RequestValidationError, ValidationError
 from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
+from fastapi import Request
+import json
 
 
-# Make validation error HTTP responses more readable
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc: RequestValidationError):
+async def _(request: Request,
+            exc: RequestValidationError):
+    print(await request.json())
     return JSONResponse(
-        status_code=418,
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": str(exc)},
     )
 
 
+# When an endpoint returns something not matching the response model, print the request body to help debugging
+@app.exception_handler(ValidationError)
+async def _(request: Request,
+            exc: ValidationError):
+    try:
+        print(await request.json())
+    except json.decoder.JSONDecodeError:
+        # Request had invalid or no body
+        pass
+
+    raise exc
+
+
 ########################################################################################################################
-# Admin functions
+# Non-production functions
 
 @app.get("/fill_db")
 def fill_db(password: str = None):
@@ -145,3 +161,13 @@ def reset_db(password: str = None):
         database.initialize_db()
         return PlainTextResponse("reset_db success")
     return PlainTextResponse("Wrong password")
+
+
+@app.get("/test", response_model=pm.Article)
+def test():
+    return "Test"
+
+
+@app.post("/test", response_model=pm.Article)
+def test():
+    return "Test"
