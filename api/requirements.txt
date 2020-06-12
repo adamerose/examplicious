@@ -1,6 +1,7 @@
 fastapi[all]
 python-multipart
 python-dotenv
+faker
 
 # Auth
 pyjwt
