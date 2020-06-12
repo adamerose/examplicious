@@ -1,10 +1,9 @@
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import * as Yup from "yup";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
-
-import { Container, Card, CardContent, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import * as Yup from "yup";
 
 const useStyles = makeStyles({
   Card: {
@@ -14,8 +13,16 @@ const useStyles = makeStyles({
 });
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().label("Username").required("Enter your username"),
-  password: Yup.string().label("Password").required("Enter your password"),
+  username: Yup.string()
+    .label("Username")
+    .required("Enter your username")
+    .min(3, "Username must be between 3 and 30 characters")
+    .max(30, "Username must be between 3 and 30 characters"),
+  password: Yup.string()
+    .label("Password")
+    .required("Enter your password")
+    .min(8, "Password must be between 8 and 30 characters")
+    .max(30, "Password must be between 8 and 30 characters"),
   remember: Yup.bool().label("Remember Me"),
 });
 
