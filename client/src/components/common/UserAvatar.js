@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
 import React from "react";
-import { Link } from "react-router-dom";
 import store from "src/store";
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -27,10 +26,10 @@ const UserAvatar = () => {
     <PopupState variant="popover">
       {(popupState) => (
         <>
-          <Link className={classes.userIcon} {...bindTrigger(popupState)}>
+          <a className={classes.userIcon} {...bindTrigger(popupState)}>
             <AccountCircleIcon />
             {store.userInfo.username}
-          </Link>
+          </a>
           <Popover
             {...bindMenu(popupState)}
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
@@ -42,13 +41,13 @@ const UserAvatar = () => {
                 Settings
               </Link> */}
 
-              <Link
+              <Button
                 onClick={store.signOut}
                 component={Button}
                 variant="outlined"
               >
                 Sign Out
-              </Link>
+              </Button>
             </div>
           </Popover>
         </>

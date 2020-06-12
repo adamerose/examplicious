@@ -9,11 +9,14 @@ import store from "src/store";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    marginBottom: "30px",
+  },
+  container: {
+    composes: "container",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "30px",
     "&>*": {},
     "& img": {
       height: "28px",
@@ -53,32 +56,34 @@ const Nav = withRouter(
 
     return (
       <AppBar className={classes.root} position="static">
-        <Link to="/" className={classes.brand}>
-          <img src="brand-white.png" />
-          <Typography variant="h6" className={classes.title}>
-            Examplicious
-          </Typography>
-        </Link>
+        <div className={classes.container}>
+          <Link to="/" className={classes.brand}>
+            <img src="/brand-white.png" />
+            <Typography variant="h6" className={classes.title}>
+              Examplicious
+            </Typography>
+          </Link>
 
-        <div className={classes.navBar}>
-          {store.isAuthenticated ? (
-            <>
-              <NavLink exact to="/">
-                Home
-              </NavLink>
-              <NavLink to="/create">New Post</NavLink>
-              <UserAvatar />
-            </>
-          ) : (
-            <>
-              <NavLink exact to="/">
-                Home
-              </NavLink>
-              <NavLink to="/sign-in">Sign In</NavLink>
-              <NavLink to="/register">Register</NavLink>
-            </>
-          )}
-          <ThemeSwitch />
+          <div className={classes.navBar}>
+            {store.isAuthenticated ? (
+              <>
+                <NavLink exact to="/">
+                  Home
+                </NavLink>
+                <NavLink to="/create">New Post</NavLink>
+                <UserAvatar />
+              </>
+            ) : (
+              <>
+                <NavLink exact to="/">
+                  Home
+                </NavLink>
+                <NavLink to="/sign-in">Sign In</NavLink>
+                <NavLink to="/register">Register</NavLink>
+              </>
+            )}
+            <ThemeSwitch />
+          </div>
         </div>
       </AppBar>
     );

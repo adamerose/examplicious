@@ -14,7 +14,7 @@ import ReactJson from "react-json-view";
 import Flex from "src/components/common/Flex";
 import * as Yup from "yup";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   Button: {
     alignSelf: "center",
     margin: "15px",
@@ -28,7 +28,12 @@ const useStyles = makeStyles({
     margin: "10px",
     width: "90%",
   },
-});
+  debug: {
+    "& span": {
+      color: theme.palette.text.primary + " !important",
+    },
+  },
+}));
 
 const FormikAutoField = ({ name, label, type, required }) => {
   const classes = useStyles();
@@ -124,13 +129,9 @@ const GenericForm = ({
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {
-          onSubmit(values, actions)
-            .catch((error) => {
-              setGlobalErrors([...globalErrors, error]);
-            })
-            .finally(() => {
-              actions.setSubmitting(false);
-            });
+          onSubmit(values, actions).catch((error) => {
+            setGlobalErrors([...globalErrors, error]);
+          });
         }}
         validationSchema={validationSchema}
       >
@@ -167,14 +168,14 @@ const GenericForm = ({
             </Flex>
 
             {debug && (
-              <>
+              <div className={classes.debug}>
                 <hr />
                 <h5>FormData</h5>
                 <ReactJson
                   src={JSON.parse(JSON.stringify(formikProps))}
                   collapsed
                 />
-              </>
+              </div>
             )}
           </Form>
         )}

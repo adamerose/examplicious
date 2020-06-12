@@ -1,6 +1,10 @@
+import Hashids from "hashids";
 import { flow, types } from "mobx-state-tree";
+import slugify from "slugify";
 import api from "src/api";
 import history from "src/history";
+
+const hashids = new Hashids("Examplicious", 5, "0123456789cfhistuCFHISTU");
 
 const UserInfo = types.model("UserInfo", {
   id: types.integer,
@@ -8,10 +12,20 @@ const UserInfo = types.model("UserInfo", {
   email: types.maybeNull(types.string),
 });
 
-const Article = types.model("Article", {
-  title: types.optional(types.string, ""),
-  body: types.optional(types.string, ""),
-});
+const Article = types
+  .model("Article", {
+    id: types.integer,
+    title: types.string,
+    body: types.string,
+  })
+  .views((self) => ({
+    get hashId() {
+      return hashids.encode(self.id);
+    },
+    get slug() {
+      return slugify(self.title, { lower: true, strict: true });
+    },
+  }));
 
 const Store = types
   .model("Store", {
@@ -19,9 +33,11 @@ const Store = types
     userInfo: types.maybe(UserInfo),
     jwt: types.maybe(types.string),
     loading: types.optional(types.boolean, false),
+    darkTheme: types.optional(types.boolean, false),
   })
   .actions((self) => {
     return {
+      // Flows
       fetchArticles: flow(function* fetchArticles() {
         const response = yield api.get("/articles");
         self.articles = response.data;
@@ -53,7 +69,7 @@ const Store = types
         self.jwt = token;
         api.defaults.headers.common = { Authorization: `bearer ${token}` };
         self.userInfo = (yield api.get("/users/me")).data;
-        history.push("/create ");
+        history.push("/create");
       }),
       signOut: flow(function* signOut() {
         self.jwt = undefined;
@@ -71,6 +87,10 @@ const Store = types
         }
       }),
 
+      // Non-flow functions
+      toggleDarkTheme() {
+        self.darkTheme = !self.darkTheme;
+      },
       // Hooks
       afterCreate() {
         self.restoreSession();

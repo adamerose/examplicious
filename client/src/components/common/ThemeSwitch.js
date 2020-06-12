@@ -4,44 +4,38 @@ import NightsStayIcon from "@material-ui/icons/NightsStay";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import Flex from "src/components/common/Flex";
+import store from "src/store";
 
 const useStyles = makeStyles((theme) => ({
-  thumb: {
-    marginTop: -5,
-    height: 20,
-    width: 20,
-    backgroundColor: "black",
-    backgroundColor: "#bbb",
-    borderRadius: "50%",
-    display: "inline-block",
-  },
+  root: {},
   switchBase: {
-    height: "100%",
-    color: "lightblue",
-
+    color: "white",
     "&$checked": {
-      color: "yellow",
+      color: "white",
+      "& + $track": {
+        backgroundColor: "black",
+        opacity: 0.4,
+      },
     },
-
-    "&$checked + $track": {
-      backgroundColor: "yellow",
-    },
+  },
+  thumb: {},
+  track: {
+    backgroundColor: "black",
+    opacity: 0.4,
   },
   checked: {},
-  track: {
-    backgroundColor: "lightblue",
-  },
 }));
 
 const ThemeSwitch = observer(() => {
   const classes = useStyles();
 
   return (
-    <Switch
-      classes={classes}
-      icon={<NightsStayIcon />}
-      checkedIcon={<WbSunnyIcon />}
-    />
+    <Flex>
+      <WbSunnyIcon fontSize="small" />
+      <Switch classes={classes} onChange={store.toggleDarkTheme} />
+      <NightsStayIcon fontSize="small" />
+    </Flex>
   );
 });
 

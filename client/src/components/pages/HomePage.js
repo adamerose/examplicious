@@ -38,7 +38,10 @@ const HomePage = observer(() => {
             </Typography>
           </CardContent>
           <CardActions>
-            <NavLink to="" className={classes.NavLink}>
+            <NavLink
+              to={`/articles/${article.hashId}/${article.slug}`}
+              className={classes.NavLink}
+            >
               <Typography variant="body2">Read more...</Typography>
             </NavLink>
           </CardActions>

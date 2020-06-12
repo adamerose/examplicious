@@ -1,4 +1,4 @@
-import { Container, CssBaseline, withStyles } from "@material-ui/core";
+import { CssBaseline, withStyles } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { observer } from "mobx-react-lite";
 import React from "react";
@@ -16,41 +16,54 @@ import store from "src/store";
 
 const themeLight = createMuiTheme({
   palette: {
-    primary: { main: "#1976D2" },
-    secondary: { main: "#ffffff" },
+    type: "light",
+
+    primary: {
+      main: "#1976D2",
+    },
   },
 });
 
 const themeDark = createMuiTheme({
   palette: {
     type: "dark",
+    primary: {
+      main: "#1976D2",
+    },
   },
 });
 
-const theme = store.isThemeDark ? themeDark : themeLight;
-
-const GlobalCss = withStyles({
-  "@global": {
-    "#root": {},
-    body: {
-      backgroundColor: "#DDD",
-    },
-    "html,body,#root": {
-      width: "100%",
-      minHeight: "100vh",
-    },
-    a: {
-      textDecoration: "unset",
-      color: "unset",
-    },
-    "a,button": {
-      userSelect: "none",
-      userDrag: "none",
-    },
-  },
-})(() => null);
-
 const App = observer(() => {
+  const theme = store.darkTheme ? themeDark : themeLight;
+
+  const GlobalCss = withStyles({
+    "@global": {
+      "#root": {},
+      "html,body,#root": {
+        width: "100%",
+        minHeight: "100vh",
+      },
+      a: {
+        textDecoration: "unset",
+        color: "unset",
+        cursor: "pointer",
+      },
+      "a,button": {
+        userSelect: "none",
+        userDrag: "none",
+      },
+      ".container": {
+        maxWidth: "1000px",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        marginLeft: "auto",
+        boxSizing: "border-box",
+        marginRight: "auto",
+        width: "100%",
+      },
+    },
+  })(() => null);
+
   return (
     <Router history={history}>
       <ThemeProvider theme={theme}>
@@ -58,7 +71,7 @@ const App = observer(() => {
         <GlobalCss />
         <Nav />
 
-        <Container>
+        <div className="container">
           <Switch>
             <Route exact path="/">
               <HomePage />
@@ -66,7 +79,7 @@ const App = observer(() => {
             <Route path="/create">
               <CreatePage />
             </Route>
-            <Route path="/article/:id">
+            <Route path="/articles/:hashId/:slug">
               <ArticlePage />
             </Route>
             <Route path="/sign-in">
@@ -76,7 +89,7 @@ const App = observer(() => {
               <RegisterPage />
             </Route>
           </Switch>
-        </Container>
+        </div>
       </ThemeProvider>
     </Router>
   );
