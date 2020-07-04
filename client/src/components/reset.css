@@ -1,0 +1,25 @@
+/* Create React App default root div*/
+
+html, body, #root {
+  /* width: 100%; */
+  /* height: 100vh; */
+}
+
+*, *::before, *::after {
+  margin: 0;
+  /* Box sizing rules */
+  box-sizing: border-box;
+  /* Disable parent-child margin collapse */
+  padding: 0.01px;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+}
+
+/* Inherit fonts for inputs and buttons */
+
+input, button, textarea, select {
+  font: inherit;
+}
