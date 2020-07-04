@@ -14,9 +14,15 @@ from app.logger import logger
 import json
 import uuid
 
-if not DATABASE_URL:
+if DATABASE_URL:
+    connect_args = {}
+else:
     logging.warning("No DATABASE_URL in environment variables. Using local sqlite database: ./examplicious.db")
     DATABASE_URL = f"sqlite:///examplicious.db"
+    connect_args = {"check_same_thread": False}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
+SessionMaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 class DbSessionContextManager:
@@ -80,6 +86,3 @@ def initialize_db():
         logger.info("Failed to create tables")
         logger.info(e)
 
-
-engine = create_engine(DATABASE_URL)
-SessionMaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
