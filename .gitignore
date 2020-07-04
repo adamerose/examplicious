@@ -4,6 +4,7 @@
 **/.idea
 **/__pycache__/
 **.db
+**/logs
 
 ################ client
 **/package-lock.json

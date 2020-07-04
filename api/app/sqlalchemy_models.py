@@ -41,17 +41,8 @@ class User(Base):
                       UniqueConstraint('email'),
                       )
 
-    id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
+    id = Column(Integer, primary_key=True, index=True)
     username = Column(Text)
     email = Column(Text)
     hashed_password = Column(Text)
 
-
-class Subscription(Base):
-    __tablename__ = "subscriptions"
-    __table_args__ = (UniqueConstraint('user_id', 'publisher_id', name='uix_1'),
-                      )
-
-    id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
-    user_id = Column(Integer, ForeignKey("users.id"))
-    publisher_id = Column(Integer, ForeignKey("users.id"))

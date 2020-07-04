@@ -27,10 +27,17 @@ const validationSchema = Yup.object().shape({
   remember: Yup.bool().label("Remember Me"),
 });
 
+const uiSchema = {};
+
 const initialValues = {
   username: "",
   password: "",
   remember: true,
+};
+
+const extraProps = {
+  username: { autoComplete: "username" },
+  password: { type: "password", autoComplete: "current-password" },
 };
 
 const onSubmit = (values, actions) => {
@@ -48,6 +55,8 @@ const CustomForm = () => {
         <GenericForm
           initialValues={initialValues}
           validationSchema={validationSchema}
+          uiSchema={uiSchema}
+          extraProps={extraProps}
           onSubmit={onSubmit}
           // debug
         />

@@ -1,10 +1,9 @@
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import * as Yup from "yup";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
-
-import { Container, Card, CardContent, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import * as Yup from "yup";
 
 const useStyles = makeStyles({
   Card: {
@@ -20,6 +19,11 @@ const validationSchema = Yup.object().shape({
 
 const uiSchema = {
   body: "textarea",
+};
+
+const extraProps = {
+  title: { autoComplete: "off" },
+  body: { autoComplete: "off" },
 };
 
 const initialValues = {
@@ -44,6 +48,7 @@ const CustomForm = () => {
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           uiSchema={uiSchema}
+          extraProps={extraProps}
           // debug
         />
       </CardContent>

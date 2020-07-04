@@ -10,6 +10,7 @@ from contextlib import contextmanager
 from app.utility import print_header
 from sqlalchemy import inspect, Table
 from sqlalchemy import MetaData
+from app.logger import logger
 import json
 import uuid
 
@@ -22,7 +23,7 @@ class DbSessionContextManager:
     def __init__(self):
         self.id = uuid.uuid4()
         self.db = SessionMaker()
-        print(f"Opened db session - {self.id}")
+        logger.info(f"Opened db session - {self.id}")
 
     def __enter__(self):
         return self.db
@@ -30,7 +31,7 @@ class DbSessionContextManager:
     def __exit__(self, exc_type, exc_value, seltraceback):
         self.db.close()
 
-        print(f"Closed db session - {self.id}")
+        logger.info(f"Closed db session - {self.id}")
 
 
 def get_db():
@@ -38,7 +39,7 @@ def get_db():
         yield db
 
 
-def describe_database():
+def describe_database(engine, session):
     """
     Nicely print a description of the tables in the database associated with this SQLA engine object
     """
@@ -53,10 +54,10 @@ def describe_database():
 
             print_header(f"{table.name} ({table_row_count} rows)")
             for column in table.columns:
-                print(f"{column.name:<15} - {str(column.type):<15}")
+                logger.info(f"{column.name:<15} - {str(column.type):<15}")
 
             for constraint in table.constraints:
-                print(constraint)
+                logger.info(constraint)
         print_header()
 
 
@@ -65,7 +66,7 @@ def delete_all_tables():
     meta.reflect()
 
     for table in meta.sorted_tables:
-        print(f"Dropping table {table.name}")
+        logger.info(f"Dropping table {table.name}")
         table.drop()
 
     initialize_db()
@@ -76,8 +77,8 @@ def initialize_db():
     try:
         sm.Base.metadata.create_all(bind=engine)
     except Exception as e:
-        print("Failed to create tables")
-        print(e)
+        logger.info("Failed to create tables")
+        logger.info(e)
 
 
 engine = create_engine(DATABASE_URL)

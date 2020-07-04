@@ -27,6 +27,13 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().label("Email").email().nullable(true).max(30),
 });
 
+const uiSchema = {};
+
+const extraProps = {
+  username: { autoComplete: "username" },
+  password: { type: "password", autoComplete: "new-password" },
+};
+
 const initialValues = {
   username: "",
   password: "",
@@ -48,6 +55,8 @@ const CustomForm = () => {
         <GenericForm
           initialValues={initialValues}
           validationSchema={validationSchema}
+          uiSchema={uiSchema}
+          extraProps={extraProps}
           onSubmit={onSubmit}
           debug
         />

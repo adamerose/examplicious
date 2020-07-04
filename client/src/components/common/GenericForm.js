@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "20px",
   },
   Alert: {
-    width: "100%",
     margin: "10px",
   },
   Input: {
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormikAutoField = ({ name, label, type, required }) => {
+const FormikAutoField = ({ name, label, type, required, extraProps }) => {
   const classes = useStyles();
   const [field, meta, helpers] = useField(name);
 
@@ -52,6 +51,7 @@ const FormikAutoField = ({ name, label, type, required }) => {
         helperText={meta.touched && meta.error}
         required={required}
         variant="outlined"
+        {...extraProps}
       />
     );
   }
@@ -65,7 +65,7 @@ const FormikAutoField = ({ name, label, type, required }) => {
         value={field.value}
         onBlur={field.onBlur}
         onChange={field.onChange}
-        error={meta.touched && meta.error}
+        error={meta.touched && Boolean(meta.error)}
         helperText={meta.touched && meta.error}
         required={required}
         variant="outlined"
@@ -105,6 +105,7 @@ const uiMapper = {
 const GenericForm = ({
   validationSchema,
   uiSchema,
+  extraProps,
   initialValues,
   onSubmit,
   debug,
@@ -130,7 +131,8 @@ const GenericForm = ({
         initialValues={initialValues}
         onSubmit={(values, actions) => {
           onSubmit(values, actions).catch((error) => {
-            setGlobalErrors([...globalErrors, error]);
+            setGlobalErrors([error]);
+            actions.setSubmitting(false);
           });
         }}
         validationSchema={validationSchema}
@@ -148,6 +150,7 @@ const GenericForm = ({
                     required={field.tests.some((x) => x.name === "required")}
                     label={field.label}
                     type={uiSchema[key] || uiMapper[field.type]}
+                    extraProps={extraProps != undefined && extraProps[key]}
                   />
                 );
               })}

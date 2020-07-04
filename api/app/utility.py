@@ -1,10 +1,12 @@
 import os
+from app.logger import logger
 
 
 def in_docker_container():
     return bool(os.environ.get('IN_DOCKER_CONTAINER', False))
 
 
+# Print a string surrounded by dashes
 def print_header(string="", width=80, character="-"):
     try:
         width = os.get_terminal_size().columns
@@ -13,7 +15,7 @@ def print_header(string="", width=80, character="-"):
 
     if string != "":
         string = " " + string + " "
-    print(string.center(width, character))
+    logger.info(string.center(width, character))
 
 
 def initial_requests():
@@ -33,9 +35,6 @@ def add_mock_data():
     f = Faker()
     for x in [person, profile, lorem]:
         f.add_provider(x)
-
-
-
 
     client = TestClient(app)
 

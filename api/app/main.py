@@ -1,3 +1,11 @@
+from pydantic import BaseModel, EmailStr
+import json
+from fastapi import Request
+from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError, ValidationError
+from fastapi.responses import PlainTextResponse, JSONResponse
+from app.authentication import verify_credentials, get_current_user, create_token, get_password_hash
+from fastapi import Depends, FastAPI, HTTPException, status
 from typing import List, Union
 import time
 from fastapi import FastAPI
@@ -8,6 +16,7 @@ from app import pydantic_models as pm
 from app import utility, database
 from app.database import engine, get_db
 from app.environment import CLIENT_HOSTNAME, CLIENT_PORT
+from app.logger import logger
 
 app = FastAPI(title="Examplicious", docs_url='/')
 
@@ -26,11 +35,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-########################################################################################################################
+# ==============================================================================
 # Authentication
-
-from fastapi import Depends, FastAPI, HTTPException, status
-from app.authentication import verify_credentials, get_current_user, create_token, get_password_hash
 
 
 @app.post("/sign-in", response_model=str)
@@ -45,18 +51,18 @@ def _(data: pm.LoginForm):
         )
 
 
-########################################################################################################################
+# ==============================================================================
 # Users
 
 @app.get("/users", response_model=List[pm.User])
-def _(db=Depends(get_db)):
+def get_users(db=Depends(get_db)):
     users = db.query(sm.User).all()
     return users
 
 
 @app.get("/users/me", response_model=pm.User)
-def _(db=Depends(get_db),
-      current_user: pm.User = Depends(get_current_user)):
+def get_current_user(db=Depends(get_db),
+                     current_user: pm.User = Depends(get_current_user)):
     user = db.query(sm.User).filter_by(username=current_user.username).one()
     return user
 
@@ -69,8 +75,8 @@ def _(item: pm.UserCreate,
     item_dict['hashed_password'] = get_password_hash(item.password)
     item_dict.pop('password')
 
-    print(item)
-    print(item_dict)
+    logger.info(item)
+    logger.info(item_dict)
     all_users = db.query(sm.User)
     if all_users.filter_by(username=item.username).first():
         raise HTTPException(
@@ -88,7 +94,7 @@ def _(item: pm.UserCreate,
     return db_user
 
 
-########################################################################################################################
+# ==============================================================================
 # Articles
 
 @app.get("/articles", response_model=List[pm.Article])
@@ -109,21 +115,14 @@ def _(item: pm.ArticleCreate,
 
     return db_article
 
-
-########################################################################################################################
-# Custom HTTP Responses
-from pydantic import BaseModel, EmailStr
-from fastapi.responses import PlainTextResponse, JSONResponse
-from fastapi.exceptions import RequestValidationError, ValidationError
-from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
-from fastapi import Request
-import json
+# ==============================================================================
+# Custom Handlers
 
 
 @app.exception_handler(RequestValidationError)
 async def _(request: Request,
             exc: RequestValidationError):
-    print(await request.json())
+    logger.info(await request.json())
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": str(exc)},
@@ -135,7 +134,7 @@ async def _(request: Request,
 async def _(request: Request,
             exc: ValidationError):
     try:
-        print(await request.json())
+        logger.info(await request.json())
     except json.decoder.JSONDecodeError:
         # Request had invalid or no body
         pass
@@ -143,8 +142,8 @@ async def _(request: Request,
     raise exc
 
 
-########################################################################################################################
-# Non-production functions
+# ==============================================================================
+# Admin functions
 
 @app.get("/fill_db")
 def _(password: str = None):
