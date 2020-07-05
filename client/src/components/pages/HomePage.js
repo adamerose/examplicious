@@ -1,50 +1,20 @@
-import { Card, CardActions, CardContent, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-// Store
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { Card } from "antd";
 import { NavLink } from "react-router-dom";
-import Flex from "src/components/common/Flex";
+import { Flex } from "src/components/utility";
 import { store } from "src/store";
 
-const useStyles = makeStyles({
-  card: {
-    margin: "0 50px",
-    marginBottom: 20,
-    whiteSpace: "pre-line",
-    "& .MuiTypography-root": {
-      maxHeight: 250,
-      overflow: "hidden",
-    },
-  },
-  NavLink: {
-    color: "grey",
-  },
-});
-
 const HomePage = observer(() => {
-  const classes = useStyles();
-
   return (
-    <Flex vertical alignItems="stretch">
+    <Flex flexDirection="column" alignItems="stretch">
       {store.articles.map((article, ix) => (
-        <Card key={ix} variant="outlined" className={classes.card}>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {article.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {article.body}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <NavLink
-              to={`/articles/${article.hashId}/${article.slug}`}
-              className={classes.NavLink}
-            >
-              <Typography variant="body2">Read more...</Typography>
-            </NavLink>
-          </CardActions>
+        <Card key={ix}>
+          <h5>{article.title}</h5>
+          <p>{article.body}</p>
+          <NavLink to={`/articles/${article.hashId}/${article.slug}`}>
+            <p>Read more...</p>
+          </NavLink>
         </Card>
       ))}
     </Flex>

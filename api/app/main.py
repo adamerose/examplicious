@@ -35,6 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # ==============================================================================
 # Authentication
 
@@ -114,6 +115,7 @@ def _(item: pm.ArticleCreate,
     db.commit()
 
     return db_article
+
 
 # ==============================================================================
 # Custom Handlers

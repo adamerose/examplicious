@@ -1,10 +1,10 @@
-import { Input, Checkbox, Alert, Button } from 'antd';
+import { Input, Checkbox, Alert, Button } from "antd";
 import { Form as FormikForm, Formik, useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import ReactJson from "react-json-view";
 // Local
-import Flex from "src/components/common/Flex";
+import { Flex } from "src/components/utility";
 import FloatLabel from "src/components/common/FloatLabel";
 import * as Yup from "yup";
 
@@ -13,9 +13,7 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
 
   if (type === "text") {
     return (
-      <FloatLabel label={label} value={field.value}
-
-      >
+      <FloatLabel label={label} value={field.value}>
         <Input
           id={name}
           value={field.value}
@@ -82,9 +80,14 @@ const GenericForm = ({
   const [globalErrors, setGlobalErrors] = useState([]);
 
   const ErrorAlert = ({ error }) => (
-    <Alert type="error" closable
-      message={error ?.name || "Error"}
-      description={error ?.response ?.data ?.detail || error ?.message || "An error occured"} />
+    <Alert
+      type="error"
+      closable
+      message={error?.name || "Error"}
+      description={
+        error?.response?.data?.detail || error?.message || "An error occured"
+      }
+    />
   );
 
   window.d.validationSchema = validationSchema;
@@ -98,6 +101,7 @@ const GenericForm = ({
         initialValues={initialValues}
         onSubmit={(values, actions) => {
           onSubmit(values, actions).catch((error) => {
+            console.log("test");
             setGlobalErrors([error]);
             actions.setSubmitting(false);
           });
@@ -106,7 +110,7 @@ const GenericForm = ({
       >
         {(formikProps) => (
           <FormikForm>
-            <Flex vertical>
+            <Flex flexDirection="column">
               {/* Loop over validationSchema fields and auto generate formik Fields */}
               {Object.keys(validationSchema.fields).map((key, index) => {
                 let field = validationSchema.describe().fields[key];
@@ -137,7 +141,7 @@ const GenericForm = ({
             </Flex>
 
             {debug && (
-              <div >
+              <div>
                 <hr />
                 <h5>FormData</h5>
                 <ReactJson

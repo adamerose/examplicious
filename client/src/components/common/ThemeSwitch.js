@@ -1,41 +1,17 @@
-import { makeStyles } from "@material-ui/core/styles";
-import Switch from "@material-ui/core/Switch";
-import NightsStayIcon from "@material-ui/icons/NightsStay";
-import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import { Switch } from "antd";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import Flex from "src/components/common/Flex";
+import { Flex } from "src/components/utility";
 import store from "src/store";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  switchBase: {
-    color: "white",
-    "&$checked": {
-      color: "white",
-      "& + $track": {
-        backgroundColor: "black",
-        opacity: 0.4,
-      },
-    },
-  },
-  thumb: {},
-  track: {
-    backgroundColor: "black",
-    opacity: 0.4,
-  },
-  checked: {},
-}));
-
 const ThemeSwitch = observer(() => {
-  const classes = useStyles();
-
+  const url = store.darkTheme
+    ? "https://image.flaticon.com/icons/svg/3127/3127165.svg"
+    : "https://image.flaticon.com/icons/svg/3127/3127140.svg";
   return (
-    <Flex>
-      <WbSunnyIcon fontSize="small" />
-      <Switch classes={classes} onChange={store.toggleDarkTheme} />
-      <NightsStayIcon fontSize="small" />
-    </Flex>
+    <a onClick={store.toggleDarkTheme}>
+      <img src={url} width="25" height="25" />
+    </a>
   );
 });
 
