@@ -1,23 +1,13 @@
+import { render } from "react-dom";
 import React from "react";
-import { createUseStyles } from "react-jss";
+import styled from "styled-components";
 
-const useStyles = createUseStyles({
-  Flex: (props) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+const Flex = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+`;
 
-    ...(props.vertical && { flexDirection: "column" }),
-  }),
-});
-
-const Flex = (props) => {
-  const classes = useStyles(props);
-  return (
-    <div className={classes.Flex} style={{ ...props }}>
-      {props.children}
-    </div>
-  );
-};
 
 export default Flex;

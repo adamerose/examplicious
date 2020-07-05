@@ -1,6 +1,4 @@
-//////////////////////////////////////////////////////////////////////////
-// CSS Reset
-@import "./reset.scss";
+
 // Fonts
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 
@@ -12,3 +10,20 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+// .ant-input {
+//   padding: 16px 12px 4px 11px;
+// }
+
+// .ant-select .ant-select-selector {
+//   padding: 16px 10px 4px 11px;
+// }
+
+// .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+//   padding: 16px 10px 4px 11px;
+//   height: 48px;
+// }
+
+// .ant-select-single .ant-select-selector .ant-select-selection-search {
+//   top: 16px;
+// }
