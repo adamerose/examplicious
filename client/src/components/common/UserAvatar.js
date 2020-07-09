@@ -1,24 +1,63 @@
+import { Button, Popover, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import PopupState, { bindMenu, bindTrigger } from "material-ui-popup-state";
 import React from "react";
-import { Menu, Dropdown, Button } from "antd";
-
 import store from "src/store";
-const menu = (
-  <Menu>
-    <div>
-      <p>{store.userInfo?.username}</p>
-      <p>{store.userInfo?.email}</p>
-    </div>
-    <Menu.Item>
-      <a onClick={store.signOut}>Sign Out</a>
-    </Menu.Item>
-  </Menu>
-);
+import styled from "styled-components";
 
+const MenuFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 5px;
+  & > * {
+    margin: 5px;
+    display: grid;
+    place-items: center;
+  }
+`;
+
+const StyledAnchor = styled.a`
+  display: flex;
+  align-content: center;
+  & > * {
+    display: grid;
+    place-items: center;
+  }
+`;
 const UserAvatar = () => {
   return (
-    <Dropdown overlay={menu}>
-      <Button>{store.userInfo?.username}</Button>
-    </Dropdown>
+    <PopupState variant="popover">
+      {(popupState) => (
+        <div>
+          <StyledAnchor {...bindTrigger(popupState)}>
+            <AccountCircleIcon />
+            <span>{store.userInfo.username}</span>
+          </StyledAnchor>
+          <Popover
+            {...bindMenu(popupState)}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <MenuFlex>
+              <p>{store.userInfo.username}</p>
+              {/* <p>{store.userInfo.email}</p> */}
+              {/* <Link to="/settings" component={Button} variant="outlined">
+                Settings
+              </Link> */}
+
+              <Button
+                onClick={store.signOut}
+                component={Button}
+                variant="outlined"
+              >
+                Sign Out
+              </Button>
+            </MenuFlex>
+          </Popover>
+        </div>
+      )}
+    </PopupState>
   );
 };
 

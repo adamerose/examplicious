@@ -33,7 +33,7 @@ const Store = types
     userInfo: types.maybe(UserInfo),
     jwt: types.maybe(types.string),
     loading: types.optional(types.boolean, false),
-    darkTheme: types.optional(types.boolean, false),
+    darkTheme: types.optional(types.boolean, true),
   })
   .actions((self) => {
     return {

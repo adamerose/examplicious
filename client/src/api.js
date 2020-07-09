@@ -10,4 +10,5 @@ const api = axios.create({
   baseURL: `${protocol}://${process.env.REACT_APP_API_HOSTNAME}:${process.env.REACT_APP_API_PORT}`,
 });
 
+window.axios = axios;
 export default api;

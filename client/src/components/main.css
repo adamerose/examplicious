@@ -1,5 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
 #root {
   height: 100%;
+}
+
+a,
+p,
+span,
+div {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
 a {

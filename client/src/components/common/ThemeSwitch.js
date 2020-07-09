@@ -1,18 +1,57 @@
-import { Switch } from "antd";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { Flex } from "src/components/utility";
+import React, { useState } from "react";
 import store from "src/store";
+import styled, { useTheme } from "styled-components";
+import { Modal, Button, Card as MuiCard } from "@material-ui/core";
+import ReactJson from "react-json-view";
 
 const ThemeSwitch = observer(() => {
-  const url = store.darkTheme
-    ? "https://image.flaticon.com/icons/svg/3127/3127165.svg"
-    : "https://image.flaticon.com/icons/svg/3127/3127140.svg";
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
   return (
-    <a onClick={store.toggleDarkTheme}>
-      <img src={url} width="25" height="25" />
-    </a>
+    <>
+      <Img
+        src="https://image.flaticon.com/icons/svg/456/456250.svg"
+        style={store.darkTheme ? {} : undefined}
+        onClick={store.toggleDarkTheme}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setOpen(true);
+        }}
+      />
+
+      <Modal
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        style={{ display: "grid", placeItems: "center" }}
+      >
+        <Card>
+          <ReactJson src={JSON.parse(JSON.stringify(theme || {}))} collapsed />
+        </Card>
+      </Modal>
+    </>
   );
 });
 
 export default ThemeSwitch;
+
+const Card = styled(MuiCard)`
+  overflow: scroll;
+  max-height: 500px;
+  height: 500px;
+  width: 90%;
+  margin: auto;
+  padding: 10px;
+  & * {
+    color: ${({ theme }) => theme.palette.text.primary + " !important"};
+  }
+`;
+
+const Img = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  ${({ theme }) => theme.palette.type == "dark" && "filter: invert(1)"}
+`;

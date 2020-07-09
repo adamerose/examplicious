@@ -3,11 +3,38 @@ import { Form as FormikForm, Formik, useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import ReactJson from "react-json-view";
+import styled from "styled-components";
 // Local
 import { Flex } from "src/components/utility";
 import FloatLabel from "src/components/common/FloatLabel";
 import * as Yup from "yup";
 
+import * as Yup from "yup";
+
+const useStyles = makeStyles((theme) => ({
+  Button: {
+    alignSelf: "center",
+    margin: "15px",
+    marginBottom: "20px",
+  },
+  Alert: {
+    margin: "10px",
+  },
+  Input: {
+    margin: "10px",
+    width: "90%",
+  },
+  debug: {
+    "& span": {
+      color: theme.palette.text.primary + " !important",
+    },
+  },
+}));
+
+const Flex = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const FormikAutoField = ({ name, label, type, required, extraProps }) => {
   const [field, meta, helpers] = useField(name);
 
@@ -102,6 +129,8 @@ const GenericForm = ({
         onSubmit={(values, actions) => {
           onSubmit(values, actions).catch((error) => {
             console.log("test");
+            console.log("X", error);
+            window.error = error;
             setGlobalErrors([error]);
             actions.setSubmitting(false);
           });
@@ -111,6 +140,8 @@ const GenericForm = ({
         {(formikProps) => (
           <FormikForm>
             <Flex flexDirection="column">
+          <Form>
+            <Flex>
               {/* Loop over validationSchema fields and auto generate formik Fields */}
               {Object.keys(validationSchema.fields).map((key, index) => {
                 let field = validationSchema.describe().fields[key];
