@@ -8,6 +8,8 @@
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.54",
+    "@react-hook/window-size": "^3.0.7",
+    "@types/lodash": "^4.14.158",
     "axios": "^0.19.2",
     "formik": "^2.1.4",
     "hashids": "^2.2.1",
@@ -25,6 +27,7 @@
     "serve": "^11.3.1",
     "slugify": "^1.4.0",
     "styled-components": "^5.1.1",
+    "typescript": "^3.9.7",
     "uuid": "^7.0.1",
     "yup": "^0.28.5"
   },

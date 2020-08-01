@@ -6,12 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.environment import DATABASE_URL
 import app.sqlalchemy_models as sm
-from contextlib import contextmanager
 from app.utility import print_header
-from sqlalchemy import inspect, Table
 from sqlalchemy import MetaData
 from app.logger import logger
-import json
 import uuid
 
 if DATABASE_URL:

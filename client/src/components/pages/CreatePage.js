@@ -1,8 +1,17 @@
+import { Card, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Card } from "antd";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 import * as Yup from "yup";
+import PageWrapper from "src/components/common/PageWrapper";
+
+const useStyles = makeStyles({
+  Card: {
+    margin: "auto",
+    maxWidth: 500,
+  },
+});
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().label("Title").required(),
@@ -28,18 +37,24 @@ const onSubmit = (values, actions) => {
 };
 
 const CustomForm = () => {
+  const classes = useStyles();
   return (
-    <Card>
-      <h5>Create Post</h5>
-      <GenericForm
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        uiSchema={uiSchema}
-        extraProps={extraProps}
-        // debug
-      />
-    </Card>
+    <PageWrapper>
+      <Card className={classes.Card}>
+        <CardContent>
+          <Typography variant="h5" align="center">
+            Create Post
+          </Typography>
+          <GenericForm
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            uiSchema={uiSchema}
+            extraProps={extraProps}
+          />
+        </CardContent>
+      </Card>
+    </PageWrapper>
   );
 };
 

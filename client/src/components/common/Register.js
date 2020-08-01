@@ -1,8 +1,15 @@
-import { Card } from "antd";
+import { Card, CardContent, Typography } from "@material-ui/core";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 import * as Yup from "yup";
+import styled from "styled-components";
+import PageWrapper from "src/components/common/PageWrapper";
+
+const StyledCard = styled(Card)`
+  margin: auto;
+  max-width: 500px;
+`;
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -38,17 +45,23 @@ const onSubmit = (values, actions) => {
 
 const CustomForm = () => {
   return (
-    <Card>
-      <h5>Register</h5>
-      <GenericForm
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        uiSchema={uiSchema}
-        extraProps={extraProps}
-        onSubmit={onSubmit}
-        debug
-      />
-    </Card>
+    <PageWrapper>
+      <StyledCard>
+        <CardContent>
+          <Typography variant="h5" align="center">
+            Register
+          </Typography>
+          <GenericForm
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            uiSchema={uiSchema}
+            extraProps={extraProps}
+            onSubmit={onSubmit}
+            debug
+          />
+        </CardContent>
+      </StyledCard>
+    </PageWrapper>
   );
 };
 

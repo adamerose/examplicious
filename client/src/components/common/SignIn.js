@@ -1,8 +1,15 @@
-import { Card } from "antd";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Modal,
+  Button as MuiButton,
+} from "@material-ui/core";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 import * as Yup from "yup";
+import styled, { useTheme } from "styled-components";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -36,20 +43,41 @@ const onSubmit = (values, actions) => {
   return store.signIn(values.username, values.password, values.remember);
 };
 
-const CustomForm = () => {
+const SignIn = () => {
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+
   return (
-    <Card>
-      <h5>Sign In</h5>
-      <GenericForm
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        uiSchema={uiSchema}
-        extraProps={extraProps}
-        onSubmit={onSubmit}
-        // debug
-      />
-    </Card>
+    <>
+      <Button onClick={() => setOpen(true)}>Sign In</Button>
+      <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
+        <StyledCard>
+          <CardContent>
+            <Typography variant="h5" align="center">
+              Sign In
+            </Typography>
+            <GenericForm
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              uiSchema={uiSchema}
+              extraProps={extraProps}
+              onSubmit={onSubmit}
+            />
+          </CardContent>
+        </StyledCard>
+      </Modal>
+    </>
   );
 };
 
-export default CustomForm;
+export default SignIn;
+
+const StyledCard = styled(Card)`
+  margin: auto;
+  max-width: 500px;
+`;
+
+const Button = styled(MuiButton)`
+  color: #fff;
+  border: 1px solid white;
+`;

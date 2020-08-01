@@ -1,9 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 
-#root {
-  height: 100%;
-}
-
 a,
 p,
 span,
@@ -15,30 +11,9 @@ a {
   text-decoration: unset;
   color: unset;
   cursor: pointer;
-}
-
-html,
-body,
-p {
-  margin: 0;
-  padding: 0;
-}
-
-ul,
-ol {
-  list-style: none;
-  padding: 0;
-}
-
-a {
   white-space: nowrap;
 }
 
-/* Inherit fonts for inputs and buttons */
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
+body {
+  margin: 0;
 }

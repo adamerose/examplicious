@@ -15,7 +15,7 @@ from app import sqlalchemy_models as sm
 from app import pydantic_models as pm
 from app import utility, database
 from app.database import engine, get_db
-from app.environment import CLIENT_HOSTNAME, CLIENT_PORT
+from app.environment import CLIENT_HOSTNAME, CLIENT_PORT, ADMIN_PASSWORD
 from app.logger import logger
 
 app = FastAPI(title="Examplicious", docs_url='/')
@@ -97,7 +97,6 @@ def _(item: pm.UserCreate,
 
 # ==============================================================================
 # Articles
-
 @app.get("/articles", response_model=List[pm.Article])
 def _(db=Depends(get_db)):
     articles = db.query(sm.Article) \
@@ -149,7 +148,7 @@ async def _(request: Request,
 
 @app.get("/fill_db")
 def _(password: str = None):
-    if password == "babymonkey":
+    if password == ADMIN_PASSWORD:
         utility.add_mock_data()
         return PlainTextResponse("fill_db success")
     return PlainTextResponse("Wrong password")
@@ -157,7 +156,7 @@ def _(password: str = None):
 
 @app.get("/reset_db")
 def _(password: str = None):
-    if password == "babymonkey":
+    if password == ADMIN_PASSWORD:
         database.delete_all_tables()
         database.initialize_db()
         return PlainTextResponse("reset_db success")

@@ -1,95 +1,139 @@
-import { CssBaseline, withStyles } from "@material-ui/core";
-import {
-  createMuiTheme,
-  ThemeProvider as MuiThemeProvider,
-} from "@material-ui/core/styles";
-import { observer } from "mobx-react-lite";
+// React
 import React from "react";
-import { Route, Router, Switch } from "react-router-dom";
-import Nav from "src/components/common/Nav";
-import ArticlePage from "src/components/pages/ArticlePage";
-import CreatePage from "src/components/pages/CreatePage";
-import HomePage from "src/components/pages/HomePage";
-import RegisterPage from "src/components/pages/RegisterPage";
-import SignInPage from "src/components/pages/SignInPage";
-import history from "src/history";
+// State
+import { observer } from "mobx-react-lite";
 import store from "src/store";
-import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import history from "src/history";
+// Theme
+import { ThemeProvider } from "styled-components";
+import { StylesProvider } from "@material-ui/core/styles";
 import "./main.css";
 
-export const Container = styled.div`
-  max-width: 1024px;
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-left: auto;
-  box-sizing: border-box;
-  margin-right: auto;
-  width: 100%;
-`;
+// Routing
+import { Route, Router, Switch } from "react-router-dom";
+import ArticlePage from "./pages/ArticlePage";
+import CreatePage from "./pages/CreatePage";
+import HomePage from "./pages/HomePage";
 
-const App = () => (
-  <>
-    <Nav />
-    <Container>
-      <Switch>
-        <Route exact path="/">
-          <HomePage />
-        </Route>
-        <Route path="/create">
-          <CreatePage />
-        </Route>
-        <Route path="/articles/:hashId/:slug">
-          <ArticlePage />
-        </Route>
-        <Route path="/sign-in">
-          <SignInPage />
-        </Route>
-        <Route path="/register">
-          <RegisterPage />
-        </Route>
-      </Switch>
-    </Container>
-  </>
-);
-
-const themeLight = createMuiTheme({
+const themeLight = {
   palette: {
     type: "light",
-
     primary: {
-      main: "#1976D2",
+      main: "#1976d2",
+      light: "rgb(71, 145, 219)",
+      dark: "rgb(17, 82, 147)",
+    },
+    secondary: {
+      main: "rgb(220, 0, 78)",
+      light: "rgb(227, 51, 113)",
+      dark: "rgb(154, 0, 54)",
+    },
+    error: {
+      light: "#e57373",
+      main: "#f44336",
+      dark: "#d32f2f",
+    },
+    warning: {
+      light: "#ffb74d",
+      main: "#ff9800",
+      dark: "#f57c00",
+    },
+    info: {
+      light: "#64b5f6",
+      main: "#2196f3",
+      dark: "#1976d2",
+    },
+    success: {
+      light: "#81c784",
+      main: "#4caf50",
+      dark: "#388e3c",
+    },
+    text: {
+      primary: "rgba(0, 0, 0, 0.87)",
+      secondary: "rgba(0, 0, 0, 0.54)",
+      disabled: "rgba(0, 0, 0, 0.38)",
+      hint: "rgba(0, 0, 0, 0.38)",
+    },
+    background: {
+      paper: "#fff",
+      default: "#fff",
+      level2: "#f5f5f5",
+      level1: "#fff",
     },
   },
-});
+};
 
-const themeDark = createMuiTheme({
+const themeDark = {
   palette: {
     type: "dark",
     primary: {
-      main: "#1976D2",
+      main: "#90caf9",
+      light: "rgb(166, 212, 250)",
+      dark: "rgb(100, 141, 174)",
+    },
+    secondary: {
+      main: "#f48fb1",
+      light: "rgb(246, 165, 192)",
+      dark: "rgb(170, 100, 123)",
+    },
+    error: {
+      light: "#e57373",
+      main: "#f44336",
+      dark: "#d32f2f",
+    },
+    warning: {
+      light: "#ffb74d",
+      main: "#ff9800",
+      dark: "#f57c00",
+    },
+    info: {
+      light: "#64b5f6",
+      main: "#2196f3",
+      dark: "#1976d2",
+    },
+    success: {
+      light: "#81c784",
+      main: "#4caf50",
+      dark: "#388e3c",
+    },
+    text: {
+      primary: "#fff",
+      secondary: "rgba(255, 255, 255, 0.7)",
+      disabled: "rgba(255, 255, 255, 0.5)",
+      hint: "rgba(255, 255, 255, 0.5)",
+      icon: "rgba(255, 255, 255, 0.5)",
+    },
+    background: {
+      paper: "#424242",
+      default: "#121212",
+      level2: "#333",
+      level1: "#212121",
     },
   },
-});
+};
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: ${({ theme }) => theme.palette.background.default};
-  }
-`;
-
-const WrappedApp = observer(() => {
+const App = observer(() => {
   const theme = store.darkTheme ? themeDark : themeLight;
 
   return (
     <Router history={history}>
-      <ThemeProvider theme={theme}>
-        <MuiThemeProvider theme={theme}>
-          <GlobalStyle />
-          <App />
-        </MuiThemeProvider>
-      </ThemeProvider>
+      <StylesProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/create">
+              <CreatePage />
+            </Route>
+            <Route path="/articles/:hashId/:slug">
+              <ArticlePage />
+            </Route>
+          </Switch>
+        </ThemeProvider>
+      </StylesProvider>
     </Router>
   );
 });
 
-export default WrappedApp;
+export default App;

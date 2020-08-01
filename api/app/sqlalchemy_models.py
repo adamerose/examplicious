@@ -27,7 +27,7 @@ class Base(DeclarativeBase):
         return f"<{name}({key_vals})>"
 
 
-class Article(Base):
+class Article(DeclarativeBase):
     __tablename__ = "articles"
 
     id = Column(Integer, primary_key=True, index=True)  # autoincrement is default
@@ -35,7 +35,7 @@ class Article(Base):
     body = Column(Text)
 
 
-class User(Base):
+class User(DeclarativeBase):
     __tablename__ = "users"
     __table_args__ = (UniqueConstraint('username'),
                       UniqueConstraint('email'),

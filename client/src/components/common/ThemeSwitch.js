@@ -28,7 +28,11 @@ const ThemeSwitch = observer(() => {
         style={{ display: "grid", placeItems: "center" }}
       >
         <Card>
-          <ReactJson src={JSON.parse(JSON.stringify(theme || {}))} collapsed />
+          <ReactJson
+            src={JSON.parse(JSON.stringify(theme || {}))}
+            collapsed
+            theme={store.darkTheme && "monokai"}
+          />
         </Card>
       </Modal>
     </>
@@ -44,9 +48,6 @@ const Card = styled(MuiCard)`
   width: 90%;
   margin: auto;
   padding: 10px;
-  & * {
-    color: ${({ theme }) => theme.palette.text.primary + " !important"};
-  }
 `;
 
 const Img = styled.img`
