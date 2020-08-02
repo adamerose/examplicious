@@ -6,9 +6,12 @@ const protocol = ["localhost", "127.0.0.1"].includes(
   ? "http"
   : "https";
 
+const baseURL = `${protocol}://${process.env.REACT_APP_API_HOSTNAME}:${process.env.REACT_APP_API_PORT}`
 const api = axios.create({
-  baseURL: `${protocol}://${process.env.REACT_APP_API_HOSTNAME}:${process.env.REACT_APP_API_PORT}`,
+  baseURL: baseURL,
 });
 
 window.axios = axios;
+
+console.log(baseURL)
 export default api;

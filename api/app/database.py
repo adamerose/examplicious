@@ -83,3 +83,5 @@ def initialize_db():
         logger.info("Failed to create tables")
         logger.info(e)
 
+
+initialize_db()

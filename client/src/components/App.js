@@ -4,11 +4,11 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import store from "src/store";
 import history from "src/history";
-// Theme
-import { ThemeProvider } from "styled-components";
-import { StylesProvider } from "@material-ui/core/styles";
+// CSS
 import "./main.css";
-
+import "normalize.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 // Routing
 import { Route, Router, Switch } from "react-router-dom";
 import ArticlePage from "./pages/ArticlePage";
@@ -117,21 +117,17 @@ const App = observer(() => {
 
   return (
     <Router history={history}>
-      <StylesProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/create">
-              <CreatePage />
-            </Route>
-            <Route path="/articles/:hashId/:slug">
-              <ArticlePage />
-            </Route>
-          </Switch>
-        </ThemeProvider>
-      </StylesProvider>
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        {/* <Route path="/create">
+            <CreatePage />
+          </Route>
+          <Route path="/articles/:hashId/:slug">
+            <ArticlePage />
+          </Route> */}
+      </Switch>
     </Router>
   );
 });

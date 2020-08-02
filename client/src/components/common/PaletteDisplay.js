@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import { Modal, Button } from "@material-ui/core";
+import { Modal, Button } from "@blueprintjs/core";
 
 const PaletteDisplay = (props) => {
   const theme = useTheme();

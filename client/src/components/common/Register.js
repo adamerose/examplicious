@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@blueprintjs/core";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";

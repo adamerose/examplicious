@@ -2,10 +2,8 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  TextField,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Alert, AlertTitle } from "@material-ui/lab";
+  TextField, Alert, AlertTitle, Asdf
+} from "@blueprintjs/core";
 import { Form, Formik, useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -14,38 +12,18 @@ import styled from "styled-components";
 // Local
 import * as Yup from "yup";
 
-const useStyles = makeStyles((theme) => ({
-  Button: {
-    alignSelf: "center",
-    margin: "15px",
-    marginBottom: "20px",
-  },
-  Alert: {
-    margin: "10px",
-  },
-  Input: {
-    margin: "10px",
-    width: "90%",
-  },
-  debug: {
-    "& span": {
-      color: theme.palette.text.primary + " !important",
-    },
-  },
-}));
+
 
 const Flex = styled.div`
   display: flex;
   flex-direction: column;
 `;
 const FormikAutoField = ({ name, label, type, required, extraProps }) => {
-  const classes = useStyles();
   const [field, meta, helpers] = useField(name);
 
   if (type === "text") {
     return (
       <TextField
-        className={classes.Input}
         id={name}
         label={label}
         value={field.value}
@@ -63,7 +41,6 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
   if (type === "textarea") {
     return (
       <TextField
-        className={classes.Input}
         id={name}
         label={label}
         value={field.value}
@@ -83,7 +60,6 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
   if (type === "checkbox") {
     return (
       <FormControlLabel
-        className={classes.Input}
         control={
           <Checkbox
             checked={field.value}
@@ -114,13 +90,12 @@ const GenericForm = ({
   onSubmit,
   debug,
 }) => {
-  const classes = useStyles();
   const [globalErrors, setGlobalErrors] = useState([]);
 
   const ErrorAlert = ({ error }) => (
-    <Alert severity="error" className={classes.Alert}>
-      <AlertTitle>{error?.name || "Error"}</AlertTitle>
-      {error?.response?.data?.detail || error?.message || "An error occured"}
+    <Alert severity="error" >
+      <AlertTitle>{error ?.name || "Error"}</AlertTitle>
+      {error ?.response ?.data ?.detail || error ?.message || "An error occured"}
     </Alert>
   );
 
@@ -163,7 +138,6 @@ const GenericForm = ({
               })}
 
               <Button
-                className={classes.Button}
                 variant="contained"
                 color="primary"
                 type="submit"
@@ -178,7 +152,7 @@ const GenericForm = ({
             </Flex>
 
             {debug && (
-              <div className={classes.debug}>
+              <div>
                 <hr />
                 <h5>FormData</h5>
                 <ReactJson

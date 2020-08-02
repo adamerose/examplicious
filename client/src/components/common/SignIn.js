@@ -2,9 +2,9 @@ import {
   Card,
   CardContent,
   Typography,
-  Modal,
-  Button as MuiButton,
-} from "@material-ui/core";
+  Dialog,
+  Button,
+} from "@blueprintjs/core";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
@@ -50,7 +50,7 @@ const SignIn = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Sign In</Button>
-      <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
+      <Dialog open={open} onClose={() => setOpen(false)} closeAfterTransition>
         <StyledCard>
           <CardContent>
             <Typography variant="h5" align="center">
@@ -65,7 +65,7 @@ const SignIn = () => {
             />
           </CardContent>
         </StyledCard>
-      </Modal>
+      </Dialog>
     </>
   );
 };
@@ -75,9 +75,4 @@ export default SignIn;
 const StyledCard = styled(Card)`
   margin: auto;
   max-width: 500px;
-`;
-
-const Button = styled(MuiButton)`
-  color: #fff;
-  border: 1px solid white;
 `;

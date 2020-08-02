@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@blueprintjs/core";
 import { observer } from "mobx-react-lite";
 import { default as React } from "react";
 import { useParams } from "react-router-dom";

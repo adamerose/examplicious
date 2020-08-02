@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import store from "src/store";
 import styled, { useTheme } from "styled-components";
-import { Modal, Button, Card as MuiCard } from "@material-ui/core";
+import { Modal, Button, Card as MuiCard } from "@blueprintjs/core";
 import ReactJson from "react-json-view";
 
 const ThemeSwitch = observer(() => {
