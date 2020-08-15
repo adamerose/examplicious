@@ -8,8 +8,6 @@ import store from "src/store";
 
 const Nav = withRouter(
   observer(() => {
-
-
     return (
       <Flex>
         <Link to="/">
@@ -28,12 +26,10 @@ const Nav = withRouter(
             </NavLink>
           </>
         ) : (
-            <>
-              <a>
-                Sign In
-              </a>
-            </>
-          )}
+          <>
+            <a>Sign In</a>
+          </>
+        )}
       </Flex>
     );
   })

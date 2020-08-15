@@ -91,6 +91,7 @@ const Store = types
       toggleDarkTheme() {
         self.darkTheme = !self.darkTheme;
       },
+
       // Hooks
       afterCreate() {
         self.restoreSession();

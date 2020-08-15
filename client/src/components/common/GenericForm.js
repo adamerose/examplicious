@@ -2,7 +2,9 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  TextField, Alert, AlertTitle, Asdf
+  TextField,
+  Alert,
+  AlertTitle,
 } from "@blueprintjs/core";
 import { Form, Formik, useField } from "formik";
 import PropTypes from "prop-types";
@@ -11,8 +13,6 @@ import ReactJson from "react-json-view";
 import styled from "styled-components";
 // Local
 import * as Yup from "yup";
-
-
 
 const Flex = styled.div`
   display: flex;
@@ -93,9 +93,9 @@ const GenericForm = ({
   const [globalErrors, setGlobalErrors] = useState([]);
 
   const ErrorAlert = ({ error }) => (
-    <Alert severity="error" >
-      <AlertTitle>{error ?.name || "Error"}</AlertTitle>
-      {error ?.response ?.data ?.detail || error ?.message || "An error occured"}
+    <Alert severity="error">
+      <AlertTitle>{error?.name || "Error"}</AlertTitle>
+      {error?.response?.data?.detail || error?.message || "An error occured"}
     </Alert>
   );
 
