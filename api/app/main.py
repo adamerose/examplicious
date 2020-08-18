@@ -16,7 +16,9 @@ from app import pydantic_models as pm
 from app import utility, database
 from app.database import engine, get_db
 from app.environment import CLIENT_HOSTNAME, CLIENT_PORT, ADMIN_PASSWORD
-from app.logger import logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Examplicious", docs_url='/')
 

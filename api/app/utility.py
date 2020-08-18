@@ -1,9 +1,4 @@
 import os
-from app.logger import logger
-
-
-def in_docker_container():
-    return bool(os.environ.get('IN_DOCKER_CONTAINER', False))
 
 
 # Print a string surrounded by dashes

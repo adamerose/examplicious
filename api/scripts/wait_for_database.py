@@ -1,6 +1,8 @@
 from app.database import engine
-from app.logger import logger
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 n = 1
 while True:

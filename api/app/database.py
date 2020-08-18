@@ -1,15 +1,16 @@
 """
 SQLAlchemy setup
 """
-import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.environment import DATABASE_URL
 import app.sqlalchemy_models as sm
 from app.utility import print_header
 from sqlalchemy import MetaData
-from app.logger import logger
 import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 if DATABASE_URL:
     connect_args = {}
