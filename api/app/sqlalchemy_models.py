@@ -2,7 +2,8 @@
 Create the database models
 """
 
-from sqlalchemy import Column, Integer, Text, Boolean, UniqueConstraint, ForeignKey
+from sqlalchemy import (Boolean, Column, ForeignKey, Integer, Text,
+                        UniqueConstraint)
 from sqlalchemy.ext.declarative import declarative_base
 
 DeclarativeBase = declarative_base()

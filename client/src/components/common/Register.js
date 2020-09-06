@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@blueprintjs/core";
+import { Card } from "antd";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
@@ -30,7 +30,10 @@ const uiSchema = {};
 
 const extraProps = {
   username: { autoComplete: "username" },
-  password: { type: "password", autoComplete: "new-password" },
+  password: {
+    type: "password",
+    autoComplete: "new-password",
+  },
 };
 
 const initialValues = {
@@ -47,19 +50,15 @@ const CustomForm = () => {
   return (
     <PageWrapper>
       <StyledCard>
-        <CardContent>
-          <Typography variant="h5" align="center">
-            Register
-          </Typography>
-          <GenericForm
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            uiSchema={uiSchema}
-            extraProps={extraProps}
-            onSubmit={onSubmit}
-            debug
-          />
-        </CardContent>
+        <h5>Register</h5>
+        <GenericForm
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          uiSchema={uiSchema}
+          extraProps={extraProps}
+          onSubmit={onSubmit}
+          debug
+        />
       </StyledCard>
     </PageWrapper>
   );

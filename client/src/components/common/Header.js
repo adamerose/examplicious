@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { Popover, Button } from "@blueprintjs/core";
+import { Popover, Button } from "antd";
 
 import store from "src/store";
 

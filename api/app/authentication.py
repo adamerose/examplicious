@@ -1,13 +1,15 @@
 from datetime import datetime, timedelta
-from passlib.context import CryptContext
+
 import jwt
-from jwt import PyJWTError
-from app.pydantic_models import UserInDB
-from app.database import get_db, DbSessionContextManager
 from fastapi import Depends, HTTPException, status
-from app import sqlalchemy_models as sm
-from app import pydantic_models as pm
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jwt import PyJWTError
+from passlib.context import CryptContext
+
+from app import pydantic_models as pm
+from app import sqlalchemy_models as sm
+from app.database import DbSessionContextManager, get_db
+from app.pydantic_models import UserInDB
 
 JWT_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 JWT_ALGORITHM = "HS256"

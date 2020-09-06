@@ -1,6 +1,7 @@
-from app.database import engine
-import time
 import logging
+import time
+
+from app.database import engine
 
 logger = logging.getLogger(__name__)
 

@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  Typography,
-  Dialog,
-  Button,
-} from "@blueprintjs/core";
+import { Card, Modal, Button } from "antd";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
@@ -36,7 +30,10 @@ const initialValues = {
 
 const extraProps = {
   username: { autoComplete: "username" },
-  password: { type: "password", autoComplete: "current-password" },
+  password: {
+    type: "password",
+    autoComplete: "current-password",
+  },
 };
 
 const onSubmit = (values, actions) => {
@@ -50,22 +47,18 @@ const SignIn = () => {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Sign In</Button>
-      <Dialog open={open} onClose={() => setOpen(false)} closeAfterTransition>
+      <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
         <StyledCard>
-          <CardContent>
-            <Typography variant="h5" align="center">
-              Sign In
-            </Typography>
-            <GenericForm
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              uiSchema={uiSchema}
-              extraProps={extraProps}
-              onSubmit={onSubmit}
-            />
-          </CardContent>
+          <h5>Sign In</h5>
+          <GenericForm
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            uiSchema={uiSchema}
+            extraProps={extraProps}
+            onSubmit={onSubmit}
+          />
         </StyledCard>
-      </Dialog>
+      </Modal>
     </>
   );
 };

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import store from "src/store";
 import styled, { useTheme } from "styled-components";
-import { Modal, Button, Card as MuiCard } from "@blueprintjs/core";
+import { Modal, Button, Card } from "antd";
 import ReactJson from "react-json-view";
 
 const ThemeSwitch = observer(() => {
@@ -21,19 +21,19 @@ const ThemeSwitch = observer(() => {
       />
 
       <Modal
-        open={open}
+        visible={open}
         onClose={() => {
           setOpen(false);
         }}
         style={{ display: "grid", placeItems: "center" }}
       >
-        <Card>
+        <StyledCard>
           <ReactJson
             src={JSON.parse(JSON.stringify(theme || {}))}
             collapsed
             theme={store.darkTheme && "monokai"}
           />
-        </Card>
+        </StyledCard>
       </Modal>
     </>
   );
@@ -41,7 +41,7 @@ const ThemeSwitch = observer(() => {
 
 export default ThemeSwitch;
 
-const Card = styled(MuiCard)`
+const StyledCard = styled(Card)`
   overflow: scroll;
   max-height: 500px;
   height: 500px;

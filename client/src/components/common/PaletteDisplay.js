@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import { Modal, Button } from "@blueprintjs/core";
+import { Modal, Button } from "antd";
 
 const PaletteDisplay = (props) => {
   const theme = useTheme();
@@ -9,7 +9,7 @@ const PaletteDisplay = (props) => {
   return (
     <div>
       <Button onClick={() => setOpen(true)}>Show Palette</Button>
-      <Modal title="Color Palette" open={open} onClose={() => setOpen(false)}>
+      <Modal title="Color Palette" visible={open} onClose={() => setOpen(false)}>
         {Object.keys(theme).map((key) => (
           <div
             style={{

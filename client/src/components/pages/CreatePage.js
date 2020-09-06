@@ -1,10 +1,9 @@
-import { Card, CardContent, Typography } from "@blueprintjs/core";
+import { Card } from "antd";
 import React from "react";
 import GenericForm from "src/components/common/GenericForm";
 import store from "src/store";
 import * as Yup from "yup";
 import PageWrapper from "src/components/common/PageWrapper";
-
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().label("Title").required(),
@@ -33,18 +32,14 @@ const CustomForm = () => {
   return (
     <PageWrapper>
       <Card>
-        <CardContent>
-          <Typography variant="h5" align="center">
-            Create Post
-          </Typography>
-          <GenericForm
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-            uiSchema={uiSchema}
-            extraProps={extraProps}
-          />
-        </CardContent>
+        <h5>Create Post</h5>
+        <GenericForm
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          uiSchema={uiSchema}
+          extraProps={extraProps}
+        />
       </Card>
     </PageWrapper>
   );

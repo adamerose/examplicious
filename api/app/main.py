@@ -1,22 +1,24 @@
-from pydantic import BaseModel, EmailStr
 import json
-from fastapi import Request
-from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
-from fastapi.exceptions import RequestValidationError, ValidationError
-from fastapi.responses import PlainTextResponse, JSONResponse
-from app.authentication import verify_credentials, get_current_user, create_token, get_password_hash
-from fastapi import Depends, FastAPI, HTTPException, status
-from typing import List, Union
-import time
-from fastapi import FastAPI
-
-from starlette.middleware.cors import CORSMiddleware
-from app import sqlalchemy_models as sm
-from app import pydantic_models as pm
-from app import utility, database
-from app.database import engine, get_db
-from app.environment import CLIENT_HOSTNAME, CLIENT_PORT, ADMIN_PASSWORD
 import logging
+import time
+from typing import List, Union
+
+from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi.exception_handlers import (http_exception_handler,
+                                        request_validation_exception_handler)
+from fastapi.exceptions import RequestValidationError, ValidationError
+from fastapi.responses import JSONResponse, PlainTextResponse
+from pydantic import BaseModel, EmailStr
+from starlette.middleware.cors import CORSMiddleware
+
+from app import database
+from app import pydantic_models as pm
+from app import sqlalchemy_models as sm
+from app import utility
+from app.authentication import (create_token, get_current_user,
+                                get_password_hash, verify_credentials)
+from app.database import engine, get_db
+from app.environment import ADMIN_PASSWORD, CLIENT_HOSTNAME, CLIENT_PORT
 
 logger = logging.getLogger(__name__)
 

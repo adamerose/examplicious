@@ -1,18 +1,3 @@
-import os
-
-
-# Print a string surrounded by dashes
-def print_header(string="", width=80, character="-"):
-    try:
-        width = os.get_terminal_size().columns
-    except:
-        pass
-
-    if string != "":
-        string = " " + string + " "
-    logger.info(string.center(width, character))
-
-
 def initial_requests():
     import requests
 
@@ -22,10 +7,11 @@ def initial_requests():
 
 
 def add_mock_data():
-    from fastapi.testclient import TestClient
-    from app.main import app
     from faker import Faker
-    from faker.providers import person, profile, lorem
+    from faker.providers import lorem, person, profile
+    from fastapi.testclient import TestClient
+
+    from app.main import app
 
     f = Faker()
     for x in [person, profile, lorem]:

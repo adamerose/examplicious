@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr as EmailStrBase
+from pydantic import BaseModel
+from pydantic import EmailStr as EmailStrBase
 
 
 # Treat empty string as null

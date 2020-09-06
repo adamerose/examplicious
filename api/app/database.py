@@ -1,32 +1,23 @@
 """
 SQLAlchemy setup
 """
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from app.environment import DATABASE_URL
-import app.sqlalchemy_models as sm
-from app.utility import print_header
-from sqlalchemy import MetaData
-import uuid
 import logging
+
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.orm import sessionmaker
+
+import app.sqlalchemy_models as sm
+from app.environment import DATABASE_URL
 
 logger = logging.getLogger(__name__)
 
-if DATABASE_URL:
-    connect_args = {}
-else:
-    logging.warning("No DATABASE_URL in environment variables. Using local sqlite database: ./examplicious.db")
-    DATABASE_URL = f"sqlite:///examplicious.db"
-    connect_args = {"check_same_thread": False}
-
-engine = create_engine(DATABASE_URL, connect_args=connect_args)
-SessionMaker = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class DbSessionContextManager:
     def __init__(self):
-        self.id = uuid.uuid4()
-        self.db = SessionMaker()
+        self.db = Session()
         logger.info(f"Opened db session - {self.id}")
 
     def __enter__(self):
@@ -43,26 +34,22 @@ def get_db():
         yield db
 
 
-def describe_database(engine, session):
-    """
-    Nicely print a description of the tables in the database associated with this SQLA engine object
-    """
+def describe_database(session):
 
-    with DbSessionContextManager() as session:
+    meta = MetaData()
+    meta.reflect(bind=session.get_bind())
 
-        meta = MetaData()
-        meta.reflect(bind=engine)
+    for table in meta.sorted_tables:
+        table_row_count = session.query(table).count()
 
-        for table in meta.sorted_tables:
-            table_row_count = session.query(table).count()
+        print('{:-^50}'.format(f" {table.name} ({table_row_count} rows) "))
+        for column in table.columns:
+            print(f"{column.name:<15} - {str(column.type):<15}")
 
-            print_header(f"{table.name} ({table_row_count} rows)")
-            for column in table.columns:
-                logger.info(f"{column.name:<15} - {str(column.type):<15}")
+        for constraint in table.constraints:
+            print(constraint)
 
-            for constraint in table.constraints:
-                logger.info(constraint)
-        print_header()
+    print('-'*50)
 
 
 def delete_all_tables():

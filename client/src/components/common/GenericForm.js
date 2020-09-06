@@ -1,11 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Alert,
-  AlertTitle,
-} from "@blueprintjs/core";
+import { Button, Checkbox, Input, Alert } from "antd";
 import { Form, Formik, useField } from "formik";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -23,7 +16,7 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
 
   if (type === "text") {
     return (
-      <TextField
+      <Input
         id={name}
         label={label}
         value={field.value}
@@ -40,7 +33,7 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
 
   if (type === "textarea") {
     return (
-      <TextField
+      <Input
         id={name}
         label={label}
         value={field.value}
@@ -59,17 +52,9 @@ const FormikAutoField = ({ name, label, type, required, extraProps }) => {
 
   if (type === "checkbox") {
     return (
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={field.value}
-            onChange={field.onChange}
-            name={name}
-            color="primary"
-          />
-        }
-        label={label}
-      />
+      <Checkbox checked={field.value} onChange={field.onChange} name={name} color="primary">
+        {label}
+      </Checkbox>
     );
   }
 
@@ -93,10 +78,11 @@ const GenericForm = ({
   const [globalErrors, setGlobalErrors] = useState([]);
 
   const ErrorAlert = ({ error }) => (
-    <Alert severity="error">
-      <AlertTitle>{error?.name || "Error"}</AlertTitle>
-      {error?.response?.data?.detail || error?.message || "An error occured"}
-    </Alert>
+    <Alert
+      type="error"
+      title={error?.name || "Error"}
+      message={error?.response?.data?.detail || error?.message || "An error occured"}
+    />
   );
 
   window.d.validationSchema = validationSchema;
@@ -141,11 +127,7 @@ const GenericForm = ({
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={
-                  formikProps.isSubmitting ||
-                  !formikProps.isValid ||
-                  !formikProps.dirty
-                }
+                disabled={formikProps.isSubmitting || !formikProps.isValid || !formikProps.dirty}
               >
                 Submit
               </Button>
@@ -155,10 +137,7 @@ const GenericForm = ({
               <div>
                 <hr />
                 <h5>FormData</h5>
-                <ReactJson
-                  src={JSON.parse(JSON.stringify(formikProps))}
-                  collapsed
-                />
+                <ReactJson src={JSON.parse(JSON.stringify(formikProps))} collapsed />
               </div>
             )}
           </Form>

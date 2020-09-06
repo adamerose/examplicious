@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@blueprintjs/core";
+import { Card } from "antd";
 import { observer } from "mobx-react-lite";
 import { default as React } from "react";
 import { useParams } from "react-router-dom";
@@ -17,15 +17,9 @@ const ArticlePage = observer(() => {
 
   return (
     <PageWrapper>
-      <Card variant="outlined">
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {article.title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {article.body}
-          </Typography>
-        </CardContent>
+      <Card>
+        <h2>{article.title}</h2>
+        <p>{article.body}</p>
       </Card>
     </PageWrapper>
   );

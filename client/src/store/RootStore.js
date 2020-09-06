@@ -23,12 +23,15 @@ const Article = types
       return hashids.encode(self.id);
     },
     get slug() {
-      return slugify(self.title, { lower: true, strict: true });
+      return slugify(self.title, {
+        lower: true,
+        strict: true,
+      });
     },
   }));
 
-const Store = types
-  .model("Store", {
+const RootStore = types
+  .model("RootStore", {
     articles: types.array(Article),
     userInfo: types.maybe(UserInfo),
     jwt: types.maybe(types.string),
@@ -62,12 +65,17 @@ const Store = types
         history.push("/");
       }),
       signIn: flow(function* signIn(username, password, remember) {
-        const token = (yield api.post("/sign-in", { username, password })).data;
+        const token = (yield api.post("/sign-in", {
+          username,
+          password,
+        })).data;
         if (remember) {
           localStorage.setItem("jwt", token);
         }
         self.jwt = token;
-        api.defaults.headers.common = { Authorization: `bearer ${token}` };
+        api.defaults.headers.common = {
+          Authorization: `bearer ${token}`,
+        };
         self.userInfo = (yield api.get("/users/me")).data;
         history.push("/create");
       }),
@@ -82,7 +90,9 @@ const Store = types
 
         if (token != undefined) {
           self.jwt = token;
-          api.defaults.headers.common = { Authorization: `bearer ${token}` };
+          api.defaults.headers.common = {
+            Authorization: `bearer ${token}`,
+          };
           self.userInfo = (yield api.get("/users/me")).data;
         }
       }),
@@ -112,4 +122,4 @@ const Store = types
     },
   }));
 
-export default Store;
+export default RootStore;
