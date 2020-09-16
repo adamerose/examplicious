@@ -45,4 +45,16 @@ const CustomForm = () => {
   );
 };
 
+const TodoList = (todos) => {
+  return (
+    <ul>
+      {store.todos.map((todo) => (
+        <li checked={store.todos.checked} onClick={store.toggleTodo(todo.id)}>
+          {todo.title}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export default CustomForm;

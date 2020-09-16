@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    // Enable absolute import paths
-    "baseUrl": ".",
-    "paths": {
-      "src/*": ["src/*"]
-    }
-  }
-}

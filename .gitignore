@@ -4,14 +4,11 @@
 **/.idea
 **/__pycache__/
 **.db
-**/logs
 
 ################ client
 **/package-lock.json
-
-**/node_modules/
-.pnp
-.pnp.js
-
+**/node_modules
 **/coverage
 **/build
+.pnp
+.pnp.js
