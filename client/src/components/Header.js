@@ -17,7 +17,7 @@ const Nav = withRouter(
       {store.isAuthenticated ? (
         <>
           <NavLink to="/create">
-            <Button>Create</Button>
+            <Button>Create Post</Button>
           </NavLink>
         </>
       ) : (
@@ -27,6 +27,9 @@ const Nav = withRouter(
           </NavLink>
           <NavLink to="/sign-up">
             <Button>Sign Up</Button>
+          </NavLink>
+          <NavLink to="/create">
+            <Button>Create Post</Button>
           </NavLink>
         </>
       )}

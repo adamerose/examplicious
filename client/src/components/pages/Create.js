@@ -3,17 +3,6 @@ import React from "react";
 import store from "../../store";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Header from "../Header";
-
-const validationSchema = Yup.object().shape({
-  title: Yup.string().label("Title").required(),
-  body: Yup.string().label("Body").required(),
-});
-
-const initialValues = {
-  title: "",
-  body: "",
-};
 
 const Form = () => {
   return (
@@ -35,11 +24,6 @@ const Form = () => {
       <Form>
         <input label="Title" name="title" type="text" />
         <input label="Body" name="body" type="text" />
-        <select label="Category" name="category">
-          {["awww", "news", "technology"].map((category) => (
-            <option value={category}>{category}</option>
-          ))}
-        </select>
         <button type="submit">Submit</button>
       </Form>
     </Formik>
@@ -49,7 +33,6 @@ const Form = () => {
 const Create = () => {
   return (
     <>
-      <Header />
       <Card>
         <h5>Create Post</h5>
         <Form />

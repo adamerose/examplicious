@@ -2,27 +2,32 @@ import React from "react";
 import { Route, Router, Switch } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import "./App.css";
-import PostPage from "./pages/Profile";
-import CreatePage from "./pages/Create";
-import HomePage from "./pages/Home";
-import history from "../history";
 import Header from "./Header";
 
-const App = observer(() => {
-  const pages = [
-    { path: "/", component: <HomePage /> },
-    { path: "/create", component: <CreatePage /> },
-    { path: "/e/:category/:id", component: <PostPage /> },
-  ];
+import Home from "./pages/Home";
+import Create from "./pages/Create";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import history from "../history";
+import PrivateRoute from "./PrivateRoute";
 
+const App = observer(() => {
   return (
     <Router history={history}>
+      <Header />
       <Switch>
-        {pages.map((page) => (
-          <Route exact path={page.path}>
-            {page.component}
-          </Route>
-        ))}
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/sign-in">
+          <SignIn />
+        </Route>
+        <Route exact path="/sign-up">
+          <SignUp />
+        </Route>
+        <PrivateRoute exact path="/create">
+          <Create />
+        </PrivateRoute>
       </Switch>
     </Router>
   );

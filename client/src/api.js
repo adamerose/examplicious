@@ -1,15 +1,33 @@
 import axios from "axios";
 
-const protocol = ["localhost", "127.0.0.1"].includes(process.env.REACT_APP_API_HOSTNAME)
+// Set up API URL
+const protocol = ["localhost", "127.0.0.1"].includes(
+  process.env.REACT_APP_API_HOSTNAME
+)
   ? "http"
   : "https";
+const host = process.env.REACT_APP_API_HOSTNAME || "localhost";
+const port = process.env.REACT_APP_API_PORT || 8000;
+const baseURL = `${protocol}://${host}:${port}`;
 
-const baseURL = `${protocol}://${process.env.REACT_APP_API_HOSTNAME}:${process.env.REACT_APP_API_PORT}`;
 const api = axios.create({
   baseURL: baseURL,
 });
 
-window.axios = axios;
+console.log("API: ", baseURL);
 
-console.log(baseURL);
+// Create global axios error handler
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (!error.response) {
+      console.log("A network error occurred.");
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default api;
