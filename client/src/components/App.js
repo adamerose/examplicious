@@ -3,10 +3,10 @@ import { Route, Router, Switch } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import "./App.css";
 import PostPage from "./pages/Profile";
-import CreatePage from "./pages/CreatePost";
+import CreatePage from "./pages/Create";
 import HomePage from "./pages/Home";
-import history from "../../history";
-import NavBar from "./NavBar";
+import history from "../history";
+import Header from "./Header";
 
 const App = observer(() => {
   const pages = [
@@ -17,7 +17,6 @@ const App = observer(() => {
 
   return (
     <Router history={history}>
-      <NavBar />
       <Switch>
         {pages.map((page) => (
           <Route exact path={page.path}>

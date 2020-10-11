@@ -3,20 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-<<<<<<< HEAD
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "antd": "^4.6.5",
-    "formik": "^2.1.7",
+    "axios": "^0.20.0",
+    "formik": "^2.2.0",
     "hashids": "^2.2.1",
-=======
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
->>>>>>> 034772125fdb4f8fdd6d1b4a867b3fb53629085d
+    "mobx": "^5.15.7",
+    "mobx-react": "^6.3.1",
+    "mobx-state-tree": "^3.17.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "slugify": "^1.4.5",
+    "styled-components": "^5.2.0",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",

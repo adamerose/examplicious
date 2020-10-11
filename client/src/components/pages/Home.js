@@ -2,10 +2,10 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import store from "src/store";
+import store from "../../store";
 import styled from "styled-components";
 import { Card } from "antd";
-import PageWrapper from "src/components/common/PageWrapper";
+import Header from "../Header";
 
 const Flex = styled.div`
   display: flex;
@@ -17,7 +17,8 @@ const Flex = styled.div`
 
 const HomePage = observer(() => {
   return (
-    <PageWrapper>
+    <>
+      <Header />
       <Flex vertical alignItems="stretch">
         {store.posts.map((post, ix) => (
           <Card>
@@ -29,7 +30,7 @@ const HomePage = observer(() => {
           </Card>
         ))}
       </Flex>
-    </PageWrapper>
+    </>
   );
 });
 

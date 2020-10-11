@@ -4,7 +4,9 @@
 import { getPath } from "mobx-state-tree";
 
 function actionLogger(call, next) {
-  console.log(`[MST] #${call.rootId} ${call.type} - ${getPath(call.context)}/${call.name}`);
+  console.log(
+    `[MST] #${call.rootId} ${call.type} - ${getPath(call.context)}/${call.name}`
+  );
   next(call);
 }
 

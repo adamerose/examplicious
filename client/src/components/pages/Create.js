@@ -3,6 +3,7 @@ import React from "react";
 import store from "../../store";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Header from "../Header";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().label("Title").required(),
@@ -45,9 +46,10 @@ const Form = () => {
   );
 };
 
-const CreatePost = () => {
+const Create = () => {
   return (
     <>
+      <Header />
       <Card>
         <h5>Create Post</h5>
         <Form />
@@ -56,4 +58,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default Create;

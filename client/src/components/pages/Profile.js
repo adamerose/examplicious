@@ -2,9 +2,9 @@ import { Card } from "antd";
 import { observer } from "mobx-react-lite";
 import { default as React } from "react";
 import { useParams } from "react-router-dom";
-import store from "src/store";
+import store from "../../store";
 import styled from "styled-components";
-import PageWrapper from "src/components/common/PageWrapper";
+import Header from "../Header";
 
 const Flex = styled.div`
   display: flex;
@@ -16,12 +16,13 @@ const PostPage = observer(() => {
   const post = store.posts.find((post) => post.hashId == hashId);
 
   return (
-    <PageWrapper>
+    <>
+      <Header />
       <Card>
         <h2>{post.title}</h2>
         <p>{post.body}</p>
       </Card>
-    </PageWrapper>
+    </>
   );
 });
 
