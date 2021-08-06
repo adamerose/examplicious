@@ -1,29 +1,34 @@
+# About
 
+This is a fullstack clone of Google Keep
 
 # Environment Variables
-``` bash
+
+```bash
 # Client
-REACT_APP_API_HOSTNAME
-REACT_APP_API_PORT
+REACT_APP_BACKEND_HOSTNAME - Used by react app to direct API calls
+REACT_APP_BACKEND_PORT - Used by react app to direct API calls
+PORT - Used by create-react-app to determine what port to run dev server on
 
 # Server
-CLIENT_HOSTNAME - Used by API server to set CORS access
-CLIENT_PORT
-DATABASE_URL
+FRONTEND_HOSTNAME - Used by backend server to set CORS access
+FRONTEND_PORT - Used by backend server to set CORS access
+DATABASE_URL - Used by backend server to direct database access
 ```
 
 # Heroku Setup
-``` bash
+
+```bash
 heroku login
 
-heroku create examplicious --remote heroku-client
-heroku create examplicious-api --remote heroku-api
+heroku create examplicious --remote heroku-frontend
+heroku create examplicious-api --remote heroku-backend
 
-heroku config:set --app examplicious
-heroku config:set --app examplicious REACT_APP_API_PORT=443
+heroku config:set --app examplicious REACT_APP_BACKEND_HOSTNAME=https://examplicious-api.herokuapp.com
+heroku config:set --app examplicious REACT_APP_BACKEND_PORT=443
 
-heroku config:set --app examplicious-api CLIENT_HOSTNAME=https://examplicious.herokuapp.com
-heroku config:set --app examplicious-api CLIENT_PORT=443
+heroku config:set --app examplicious-api FRONTEND_HOSTNAME=https://examplicious.herokuapp.com
+heroku config:set --app examplicious-api FRONTEND_PORT=443
 
 heroku addons:create --app examplicious-api heroku-postgresql:hobby-dev
 ```
@@ -32,14 +37,14 @@ heroku addons:create --app examplicious-api heroku-postgresql:hobby-dev
 
 After cloning or committing changes, push subfolders to their respective apps' remotes.
 
-``` bash
-git subtree push --prefix client heroku-client master
-git subtree push --prefix api heroku-api master
+```bash
+git subtree push --prefix frontend heroku-frontend master
+git subtree push --prefix backend heroku-backend master
 ```
 
 # Heroku Administration
 
-``` bash
+```bash
 # Show app logs
 heroku logs --app examplicious --tail
 heroku logs --app examplicious-api --tail
@@ -51,9 +56,10 @@ heroku dyno:restart --app examplicious
 heroku dyno:restart --app examplicious-api
 ```
 
-
 ## Technologies
+
 ### Client
+
 #### Core
 
 - [create-react-app](https://create-react-app.dev/) - Generates boilerplate React app and webpack config
@@ -65,7 +71,6 @@ heroku dyno:restart --app examplicious-api
 - [axios](https://github.com/axios/axios) - Handle HTTP requests
 - [mobx](https://mobx.js.org/) - State management library
 - [mobx-state-tree](https://mobx-state-tree.js.org/) - Opinionated state tree structure library built on MobX
-- [mobx-react-router](https://www.npmjs.com/package/mobx-react-router) - Connects MobX state and observables to React Router
 - [serve](https://github.com/zeit/serve) - Serve web app static files from build
 
 #### UI
