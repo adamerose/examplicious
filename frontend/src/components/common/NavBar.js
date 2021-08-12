@@ -1,41 +1,40 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components/macro";
-import {
-  AssignmentOutlined,
-  NotificationsNoneOutlined,
-  LabelOutlined,
-  ArchiveOutlined,
-  DeleteOutlined,
-} from "@material-ui/icons";
+import { Bug, FileText, Bell, Tag, Archive, Trash } from "react-bootstrap-icons";
 
-import { paper } from "../styling/commonStyles";
 const NavBar = () => {
   return (
     <Wrapper>
       <div className="fixed-wrapper">
         <NavLink to="/notes" activeClassName="selected">
-          <AssignmentOutlined />
+          <FileText />
           <span>Notes</span>
         </NavLink>
+
         <NavLink to="/reminders" activeClassName="selected">
-          <NotificationsNoneOutlined />
+          <Bell />
           <span>Reminders</span>
         </NavLink>
 
         <NavLink to="/labels" activeClassName="selected">
-          <LabelOutlined />
+          <Tag />
           <span>Labels</span>
         </NavLink>
 
         <NavLink to="/archive" activeClassName="selected">
-          <ArchiveOutlined />
+          <Archive />
           <span>Archive</span>
         </NavLink>
 
         <NavLink to="/trash" activeClassName="selected">
-          <DeleteOutlined />
+          <Trash />
           <span>Trash</span>
+        </NavLink>
+
+        <NavLink to="/debug" activeClassName="selected">
+          <Bug />
+          <span>Debug</span>
         </NavLink>
       </div>
     </Wrapper>
@@ -47,7 +46,7 @@ const Wrapper = styled.nav`
   flex-grow: 0;
   flex-direction: column;
   width: ${(props) => (props.collapsed ? "48px" : "280px")};
-  font-size: 14px;
+  font-size: 11pt;
   font-weight: 500;
   padding-top: 8px;
 
@@ -64,13 +63,13 @@ const Wrapper = styled.nav`
     ${(props) => (props.collapsed ? "margin-left: 12px;" : "padding-left: 12px;")};
 
     svg {
-      height: 24px;
-      width: 24px;
+      height: 20px;
+      width: 20px;
       margin: 0 12px;
     }
 
     span {
-      margin-left: 16px;
+      margin-left: 24px;
       display: ${(props) => (props.collapsed ? "none" : "inherit")};
     }
 

@@ -5,6 +5,7 @@ import styled, { ThemeProvider } from "styled-components/macro";
 import { GlobalStyle } from "./styling/globalStyle";
 import { lightTheme, darkTheme } from "./styling/theme";
 
+import Debug from "./pages/Debug";
 import Notes from "./pages/Notes";
 import NavBar from "./common/NavBar";
 import Header from "./common/Header";
@@ -21,6 +22,9 @@ const App = () => {
     <Switch>
       <Route exact path="/">
         <Redirect to="/notes" />
+      </Route>
+      <Route path="/debug">
+        <Debug />
       </Route>
       <Route path="/notes">
         <Notes />
