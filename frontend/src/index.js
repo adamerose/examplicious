@@ -1,11 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
-import { Provider } from "react-redux";
-import store from "./store/rootStore";
+import { createOvermind } from "overmind";
+import { Provider } from "overmind-react";
+import { config } from "./store";
+
+export const overmind = createOvermind(config, {
+  devtools: true,
+});
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider value={overmind}>
     <App />
   </Provider>,
   document.getElementById("root")

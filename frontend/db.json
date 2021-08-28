@@ -1,26 +1,26 @@
 {
   "notes": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Title 1",
       "text": "Text 1 - Est libero a lorem curabitur auctor at viverra ipsum id euismod condimentum dolor vel sit nullam libero nec"
     },
-    { "id": 2, "title": "Title 2", "text": "Text 2 - Auctor dolor vitae nullam" },
+    { "id": "2", "title": "Title 2", "text": "Text 2 - Auctor dolor vitae nullam" },
     {
-      "id": 3,
+      "id": "3",
       "title": "Title 3",
       "text": "Text 3 - Viverra nunc enim adipiscing lorem laoreet id nec condimentum est odio dolor sagittis in libero nullam ipsum"
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Title 4",
       "text": "Text 4 - Ipsum libero in elit id odio at euismod sit dolor viverra vel libero nunc tincidunt amet curabitur a sagittis id"
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Title 5",
       "text": "Text 5 - Viverra dolor laoreet sagittis curabitur nunc enim id at nullam tincidunt odio in dolor a"
     },
-    { "id": 6, "title": "Title 6", "text": "Text 6 - Nullam lorem tincidunt" }
+    { "id": "6", "title": "Title 6", "text": "Text 6 - Nullam lorem tincidunt" }
   ]
 }
