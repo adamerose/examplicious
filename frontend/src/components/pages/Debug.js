@@ -1,18 +1,23 @@
-import React from "react";
-import styled from "styled-components/macro";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import AppStateDisplay from "../common/AppStateDisplay";
+function Debug() {
+  const state = useState();
 
-const Debug = () => {
   return (
     <Wrapper>
-      <AppStateDisplay />
+      <pre>{JSON.stringify(state)}</pre>
     </Wrapper>
   );
-};
+}
 
 const Wrapper = styled.div`
-  padding: 45px;
+  margin: 20px 10px;
+  padding: 10px 20px;
+  margin-right: auto;
+  width: fit-content;
+  max-width: 800px;
+  overflow-x: scroll;
+  border: 1px solid black;
 `;
-
 export default Debug;

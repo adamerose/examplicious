@@ -1,22 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MasonryGrid from "../common/MasonryGrid";
-import Dummy from "dummyjs";
 import styled from "styled-components/macro";
-import { useAppState } from "../../store";
+// Redux imports
+import { useSelector, useDispatch } from "react-redux";
+import { notes$ } from "../../state/slices/notesSlice";
+import { fetchNotes } from "../../state/slices/notesSlice";
 
 const Notes = () => {
-  const state = useAppState();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchNotes());
+  }, [null]);
 
-  const items = state.notes.allNotes.map((note, i) => (
-    <StyledNote key={i}>
-      <h3>{note.title}</h3>
-      <div>{note.text}</div>
-    </StyledNote>
-  ));
+  const notes = useSelector((state) => Object.values(state.notes.byId));
+  const notes2 = [
+    {
+      id: "1",
+      title: "Title 1",
+      text: "Text 1 - Est libero a lorem curabitur auctor at viverra ipsum id euismod condimentum dolor vel sit nullam libero nec",
+    },
+    { id: "2", title: "Title 2", text: "Text 2 - Auctor dolor vitae nullam" },
+    {
+      id: "3",
+      title: "Title 3",
+      text: "Text 3 - Viverra nunc enim adipiscing lorem laoreet id nec condimentum est odio dolor sagittis in libero nullam ipsum",
+    },
+  ];
+
+  console.log(JSON.stringify(notes) == JSON.stringify(notes2));
 
   return (
     <StyledNotes>
-      <MasonryGrid>{items}</MasonryGrid>
+      <MasonryGrid>
+        {notes.map((note, i) => (
+          <StyledNote key={i}>
+            <h3>{note.title}</h3>
+            <div>{note.text}</div>
+          </StyledNote>
+        ))}
+      </MasonryGrid>
+      <MasonryGrid>
+        {notes2.map((note, i) => (
+          <StyledNote key={i}>
+            <h3>{note.title}</h3>
+            <div>{note.text}</div>
+          </StyledNote>
+        ))}
+      </MasonryGrid>
     </StyledNotes>
   );
 };

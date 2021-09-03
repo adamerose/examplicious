@@ -1,21 +1,22 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import styled, { css } from "styled-components/macro";
-import { useActions } from "../../store";
 import { List } from "react-bootstrap-icons";
+// Redux imports
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme, collapseSidebar } from "../../state/slices/uiSlice";
 
 const Header = () => {
-  const actions = useActions();
+  const dispatch = useDispatch();
 
   return (
     <StyledHeader>
-      <Button onClick={actions.ui.collapseSidebar}>
+      <Button onClick={() => dispatch(collapseSidebar())}>
         <List />
       </Button>
       <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />
       <Title>Peek</Title>
       <Spacer />
-      <Button onClick={actions.ui.toggleTheme}>💡</Button>
+      <Button onClick={() => dispatch(toggleTheme())}>💡</Button>
     </StyledHeader>
   );
 };

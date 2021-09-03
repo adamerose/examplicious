@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create app instance
-app = FastAPI(title="Examplicious", docs_url='/')
+app = FastAPI(title="keep-clone", docs_url='/')
 
 # Configure CORS
 app.add_middleware(CORSMiddleware,

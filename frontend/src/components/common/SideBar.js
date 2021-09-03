@@ -1,14 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled, { css } from "styled-components/macro";
-import { Bug, FileText, Bell, Tag, Archive, Trash } from "react-bootstrap-icons";
-import { useAppState } from "../../store";
+import { Bug, FileText, Bell, Tag, Archive, Trash, Calculator } from "react-bootstrap-icons";
+// Redux imports
+import { useSelector, useDispatch } from "react-redux";
 
 const SideBar = () => {
-  const state = useAppState();
+  const sidebarCollapsed = useSelector((state) => state.ui.sidebarCollapsed);
 
   return (
-    <StyledSideBar sidebarCollapsed={state.ui.sidebarCollapsed}>
+    <StyledSideBar sidebarCollapsed={sidebarCollapsed}>
       <NavLink to="/notes" activeClassName="selected">
         <FileText />
         <span>Notes</span>
@@ -37,6 +38,11 @@ const SideBar = () => {
       <NavLink to="/debug" activeClassName="selected">
         <Bug />
         <span>Debug</span>
+      </NavLink>
+
+      <NavLink to="/counter" activeClassName="selected">
+        <Calculator />
+        <span>Counter</span>
       </NavLink>
     </StyledSideBar>
   );

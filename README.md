@@ -21,16 +21,16 @@ DATABASE_URL - Used by backend server to direct database access
 ```bash
 heroku login
 
-heroku create examplicious --remote heroku-frontend
-heroku create examplicious-api --remote heroku-backend
+heroku create adrotog-keep --remote heroku-frontend
+heroku create adrotog-keep-api --remote heroku-backend
 
-heroku config:set --app examplicious REACT_APP_BACKEND_HOSTNAME=https://examplicious-api.herokuapp.com
-heroku config:set --app examplicious REACT_APP_BACKEND_PORT=443
+heroku config:set --app adrotog-keep REACT_APP_BACKEND_HOSTNAME=https://adrotog-keep-api.herokuapp.com
+heroku config:set --app adrotog-keep REACT_APP_BACKEND_PORT=443
 
-heroku config:set --app examplicious-api FRONTEND_HOSTNAME=https://examplicious.herokuapp.com
-heroku config:set --app examplicious-api FRONTEND_PORT=443
+heroku config:set --app adrotog-keep-api FRONTEND_HOSTNAME=https://adrotog-keep.herokuapp.com
+heroku config:set --app adrotog-keep-api FRONTEND_PORT=443
 
-heroku addons:create --app examplicious-api heroku-postgresql:hobby-dev
+heroku addons:create --app adrotog-keep-api heroku-postgresql:hobby-dev
 ```
 
 # Heroku Deployment
@@ -46,14 +46,14 @@ git subtree push --prefix backend heroku-backend master
 
 ```bash
 # Show app logs
-heroku logs --app examplicious --tail
-heroku logs --app examplicious-api --tail
+heroku logs --app adrotog-keep --tail
+heroku logs --app adrotog-keep-api --tail
 # Destroy app
-heroku apps:destroy examplicious --confirm examplicious
-heroku apps:destroy examplicious-api --confirm examplicious-api
+heroku apps:destroy adrotog-keep --confirm adrotog-keep
+heroku apps:destroy adrotog-keep-api --confirm adrotog-keep-api
 # Restart dyno
-heroku dyno:restart --app examplicious
-heroku dyno:restart --app examplicious-api
+heroku dyno:restart --app adrotog-keep
+heroku dyno:restart --app adrotog-keep-api
 ```
 
 ## Technologies
